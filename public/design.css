@@ -135,3 +135,54 @@ html,body{background:#101a20}
 [data-tier=full] .card-portrait{box-shadow:inset 0 0 40px #d3b06c33}
 @keyframes portrait-light-pass{0%,35%{transform:translateX(-130%)}80%,100%{transform:translateX(130%)}}
 @media(prefers-reduced-motion:reduce){.portrait-sheen::before{animation:none}}
+
+/* Stronger profiles, with a deliberate increase in effects at higher coin values. */
+[data-tier=small][data-count="1"] .print-card{width:76%;height:72%}
+[data-tier=small][data-count="2"] .print-card{height:72%}
+[data-tier=small] .card-portrait{height:65%}
+[data-tier=small] .card-name{bottom:10%}
+[data-tier=small] .card-gift{bottom:1.5%}
+[data-tier=pair] .card-portrait{left:2%;top:8%;width:96%;height:66%}
+[data-tier=pair] .card-name{bottom:14%}
+[data-tier=pair] .card-handle{bottom:9%}
+[data-tier=pair] .card-gift{bottom:4.5%}
+[data-tier=pair] .card-coins{bottom:.5%}
+@container (min-aspect-ratio:1.5){
+ [data-tier=half] .card-portrait{left:24%;top:8%;width:min(84cqh,45cqw)}
+ [data-tier=half] .premium-orbit{left:24%;top:5%;width:min(90cqh,49cqw)}
+ [data-tier=half] .gift-effect{left:48%;right:4%;width:auto;top:9%;font-size:min(4cqw,7cqh);letter-spacing:.12em}
+ [data-tier=half] .card-name{left:48%;right:4%;bottom:43%;font-size:min(9cqw,16cqh);text-align:center}
+ [data-tier=half] .card-handle{left:48%;right:4%;bottom:32%;font-size:min(4cqw,7cqh)}
+ [data-tier=half] .card-gift{left:48%;right:4%;bottom:18%;font-size:min(5cqw,9cqh)}
+ [data-tier=half] .card-coins{left:48%;right:4%;bottom:7%;text-align:center;font-size:min(4cqw,7cqh)}
+}
+[data-tier=half] .portrait-sheen::before{animation-duration:3s;background:linear-gradient(115deg,transparent 38%,#b4fff451 49%,transparent 60%)}
+[data-tier=half] .card-portrait::after{animation-duration:3.5s;border-width:3px}
+[data-tier=full][data-prestige=gold] .portrait-sheen::before{animation-duration:3.8s}
+.prestige-aura{position:absolute;inset:2%;pointer-events:none;z-index:3;border:2px solid #bde8ff66;border-radius:7px;box-shadow:inset 0 0 25px #8ce2ff33;animation:prestige-frame 2.6s ease-in-out infinite alternate}
+[data-prestige=diamond].print-card{border-color:#b6eaff;box-shadow:0 0 20px #77c8ee66,inset 0 0 20px #96c2ff33}
+[data-prestige=diamond] .gift-effect{color:#d5f3ff;text-shadow:0 0 14px #8fb5e9}
+[data-prestige=diamond] .design-corners{border-color:#b3e6ff}
+[data-prestige=diamond] .card-name{background-image:linear-gradient(105deg,#7da6d3,#f3fcff 25%,#9ae9ff 45%,#cdb7ff 70%,#f3fcff);filter:drop-shadow(0 1px 3px #020b22)}
+[data-prestige=diamond] .premium-orbit{background:repeating-conic-gradient(transparent 0deg 21deg,#bce9ff20 22deg 25deg,transparent 26deg 45deg);animation-duration:24s}
+[data-prestige=diamond] .premium-particles span{color:#c5edff}
+[data-prestige=diamond] .portrait-sheen::before{background:linear-gradient(115deg,transparent 38%,#c2ecff40 49%,transparent 60%);animation-duration:3.3s}
+[data-prestige=galactic].print-card{border-color:#d5a9ff;box-shadow:0 0 25px #a170eb66,inset 0 0 24px #bd8aff44}
+[data-prestige=galactic] .prestige-aura{border-color:#e0b5ff99;box-shadow:inset 0 0 40px #a566df55;animation-duration:1.8s}
+[data-prestige=galactic] .gift-effect{color:#f0dcff;text-shadow:0 0 12px #af6de5;letter-spacing:.2em}
+[data-prestige=galactic] .design-corners{border-color:#e6c8ff}
+[data-prestige=galactic] .card-name{background-image:linear-gradient(105deg,#8bd5ff,#fff0cb 20%,#e1aaff 40%,#a7f9f5 65%,#ffe5bd 85%);animation-duration:2s}
+[data-prestige=galactic] .premium-orbit{background:repeating-conic-gradient(transparent 0deg 12deg,#b48cfe25 13deg 16deg,transparent 17deg 30deg);animation-duration:18s}
+[data-prestige=galactic] .premium-particles span{color:#ebcdff;animation-duration:3.2s}
+[data-prestige=galactic] .premium-particles span:nth-child(3n){color:#b6f4f4}
+[data-prestige=galactic] .premium-particles span:nth-child(4n){color:#ffe0ac}
+[data-prestige=galactic] .portrait-sheen::before{background:linear-gradient(115deg,transparent 38%,#debaff4d 49%,transparent 60%);animation-duration:2.6s}
+.premium-particles span{left:calc(4% + var(--lane,var(--i))*8%)}
+@keyframes prestige-frame{from{opacity:.55;transform:scale(.99)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.prestige-aura{animation:none}}
+
+#demo-button{max-width:94%;flex-wrap:wrap;justify-content:center}
+/* Cap stacked medals by the allocated half-sheet height to keep names clear. */
+[data-tier=half] .card-portrait{top:9%;height:60%;width:auto;aspect-ratio:1}
+[data-tier=half] .premium-orbit{top:7%;height:64%;width:auto;aspect-ratio:1}
+@container (min-aspect-ratio:1.5){[data-tier=half] .card-portrait{top:8%;height:auto;width:min(84cqh,45cqw)}[data-tier=half] .premium-orbit{top:5%;height:auto;width:min(90cqh,49cqw)}}

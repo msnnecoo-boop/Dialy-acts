@@ -24,15 +24,19 @@ function designMark(kind) {
 function card(item) {
   const el = element('article', 'print-card');
   el.dataset.tier = item.tier;
+  const prestige = item.tier === 'full' ? (item.totalCoins >= 5000 ? 'galactic' : item.totalCoins >= 1000 ? 'diamond' : 'gold') : 'standard';
+  el.dataset.prestige = prestige;
   if (item.printId) el.dataset.printId = item.printId;
-  const effect = element('div', 'gift-effect', item.tier === 'full' ? 'LEGENDARY' : 'SUPER STAR');
+  const effect = element('div', 'gift-effect', item.tier === 'full' ? ({ gold: 'LEGENDARY', diamond: 'DIAMOND', galactic: 'GALACTIC' })[prestige] : 'SUPER STAR');
   if (item.tier === 'full' || item.tier === 'half') effect.prepend(designMark(item.tier));
   else el.append(element('div', 'edition-badge', item.tier === 'pair' ? 'DUO / 02' : 'LIVE PRINT'));
   el.append(element('div', 'design-corners')); 
   if (item.tier === 'half' || item.tier === 'full') {
     const particles = element('div', 'premium-particles'); particles.setAttribute('aria-hidden', 'true');
-    for (let i = 0; i < 12; i++) { const star = element('span', '', i % 3 === 0 ? '✧' : '✦'); star.style.setProperty('--i', i); particles.append(star); }
+    const particleCount = prestige === 'galactic' ? 20 : prestige === 'diamond' ? 16 : 12;
+    for (let i = 0; i < particleCount; i++) { const star = element('span', '', i % 3 === 0 ? '✧' : '✦'); star.style.setProperty('--i', i); star.style.setProperty('--lane', i % 12); particles.append(star); }
     el.append(particles, element('div', 'premium-orbit'), element('div', 'premium-flash'));
+    if (prestige === 'diamond' || prestige === 'galactic') el.append(element('div', 'prestige-aura'));
   }
   effect.setAttribute('aria-hidden', 'true');
   const portrait = element('div', 'card-portrait');
