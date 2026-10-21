@@ -27,7 +27,8 @@ function next() {
   void paper.offsetWidth;
   paper.classList.remove('reset');
   paper.classList.add('printing');
-  setTimeout(() => { paper.classList.remove('printing'); paper.classList.add('reset'); setTimeout(next, 450); }, 6800);
+  document.querySelector('.machine').classList.add('is-printing');
+  setTimeout(() => { document.querySelector('.machine').classList.remove('is-printing'); paper.classList.remove('printing'); paper.classList.add('reset'); setTimeout(next, 450); }, 6800);
 }
 function enqueue(item) { if (queue.length >= 50) queue.shift(); queue.push(item); $('queue').textContent = 'Queue: ' + queue.length; if (!active) next(); }
 function connect() {
@@ -41,3 +42,5 @@ document.addEventListener('keydown', ev => { if (ev.key.toLowerCase() === 'd' &&
 
 $('demo-button').addEventListener('click', () => { if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'demo' })); });
 if (new URLSearchParams(location.search).get('clean') === '1') document.querySelector('.bottom').hidden = true;
+
+if (new URLSearchParams(location.search).get('transparent') === '1') document.documentElement.classList.add('transparent');
