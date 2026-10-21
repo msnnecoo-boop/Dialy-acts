@@ -10,5 +10,9 @@ export function normalizeGift(evt, timestamp = Date.now()) {
   const avatar = evt.profilePictureUrl || evt.user?.profilePictureUrl || evt.user?.profilePicture?.urls?.[0] || evt.user?.avatarThumb?.urlList?.[0] || '';
   const count = Number(evt.repeatCount);
   const repeatCount = Number.isFinite(count) ? Math.max(1, Math.min(9999, Math.floor(count))) : 1;
-  return { type: 'gift', id, nickname, giftName, avatar: typeof avatar === 'string' && /^https:\/\//i.test(avatar) ? avatar : '', repeatCount, timestamp };
+  const rawCoins = Number(evt.giftDetails?.diamondCount ?? evt.diamondCount ?? evt.extendedGiftInfo?.diamond_count ?? evt.extendedGiftInfo?.diamondCount);
+  const unitCoins = Number.isFinite(rawCoins) && rawCoins >= 0 ? Math.floor(rawCoins) : null;
+  const totalCoins = unitCoins === null ? null : unitCoins * repeatCount;
+  const tier = totalCoins >= 500 ? 'full' : totalCoins >= 100 ? 'half' : totalCoins >= 10 ? 'pair' : 'small';
+  return { unitCoins, totalCoins, tier, type: 'gift', id, nickname, giftName, avatar: typeof avatar === 'string' && /^https:\/\//i.test(avatar) ? avatar : '', repeatCount, timestamp };
 }

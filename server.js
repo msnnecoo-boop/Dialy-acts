@@ -35,7 +35,13 @@ wss.on('connection', ws => {
   ws.on('message', data => {
     // Demo is restricted to the local host; external viewers cannot trigger fake gifts.
     if (!DEMO) return;
-    try { const m = JSON.parse(data); if (m.type === 'demo') emitGift({ uniqueId: 'demo_viewer', nickname: 'Demo Viewer', profilePictureUrl: '', giftName: 'Rose', repeatCount: 1, giftId: 5655 }); } catch {}
+    try {
+      const m = JSON.parse(data);
+      if (m.type !== 'demo') return;
+      const coins = ({ full: 500, half: 100, pair: 10, small: 1 })[m.tier] || 1;
+      const count = m.batch === true ? (coins === 1 ? 6 : 2) : 1;
+      for (let i = 0; i < count; i++) emitGift({ uniqueId: count === 1 ? 'demo_viewer' : `demo_viewer_${i + 1}`, nickname: count === 1 ? 'Demo Viewer' : `Viewer ${i + 1}`, profilePictureUrl: '', giftName: coins === 1 ? 'Rose' : 'Demo Gift', diamondCount: coins, repeatCount: 1, giftId: 5655 });
+    } catch {}
   });
 });
 function status(message, isConnected = false) { connected = isConnected; lastStatus = message; console.log('[TikTok]', message); send({ type: 'status', connected, status: message, username: USERNAME, demo: DEMO }); }
