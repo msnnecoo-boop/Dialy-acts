@@ -1,3 +1,4 @@
+import { liveOptions, requiresProviderAccess } from './connection.js';
 import { normalizeGift, isPendingStreak } from './gifts.js';
 import 'dotenv/config';
 import http from 'node:http';
@@ -24,6 +25,7 @@ const server = http.createServer(async (req, res) => {
   } catch { res.writeHead(500); res.end('Unable to load'); }
 });
 const wss = new WebSocketServer({ server });
+wss.on('error', err => console.error(`[Overlay] ${err.code || 'ERROR'}: ${err.message}`));
 let connected = false;
 let lastStatus = 'Starting';
 function send(payload) {
@@ -57,10 +59,11 @@ function emitGift(evt) {
   console.log(`[Gift] ${gift.nickname} → ${gift.giftName} x${gift.repeatCount}`);
 }
 if (!DEMO) {
-  const live = new TikTokLiveConnection(USERNAME, { enableExtendedGiftInfo: true, processInitialData: false });
+  const live = new TikTokLiveConnection(USERNAME, liveOptions());
   let reconnectTimer;
   let retry = 0;
   let stopping = false;
+  let providerBlocked = false;
   async function connect() {
     if (stopping) return;
     try {
@@ -69,12 +72,14 @@ if (!DEMO) {
       retry = 0;
       status(`Connected to @${USERNAME}`, true);
     } catch (err) {
-      status(`Not connected: ${err.message || err}`);
-      schedule();
+      if (requiresProviderAccess(err)) {
+        providerBlocked = true; clearTimeout(reconnectTimer); reconnectTimer = null;
+        status('Provider access required. Automatic retries paused. Check SIGN_API_KEY / provider permissions, then restart.');
+      } else { status(`Not connected: ${err.message || err}`); schedule(); }
     }
   }
   function schedule() {
-    if (reconnectTimer || stopping) return;
+    if (reconnectTimer || stopping || providerBlocked) return;
     const wait = Math.min(60000, 3000 * 2 ** Math.min(retry++, 4));
     reconnectTimer = setTimeout(() => { reconnectTimer = null; connect(); }, wait);
   }

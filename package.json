@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "check": "node --check server.js",
-    "test": "node --test tests/gifts.test.mjs && node tests/smoke.mjs"
+    "test": "node --test tests/gifts.test.mjs tests/connection.test.mjs && node tests/smoke.mjs"
   },
   "engines": {
     "node": ">=20"
