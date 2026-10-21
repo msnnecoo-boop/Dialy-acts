@@ -7,7 +7,7 @@
 3. برای آزمایش، روی `START-DEMO.cmd` دوبار کلیک کنید. بار اول اینترنت برای نصب بسته‌ها لازم است.
 4. در مرورگر آدرس http://127.0.0.1:3100/overlay را باز کنید و دکمهٔ «آزمایش هدیه» را بزنید. کلید D هم همین کار را می‌کند.
 5. پنجرهٔ آزمایش را با Ctrl+C ببندید؛ سپس `START-LIVE.cmd` را اجرا کنید. هر دو را همزمان اجرا نکنید.
-6. حساب پیش‌فرض `necoo_msn` است. برای تغییر، فایل `.env` را با Notepad باز کرده و `TIKTOK_USERNAME` را ویرایش کنید.
+6. حساب پیش‌فرض `familydramaaf` است. برای تغییر، فایل `.env` را با Notepad باز کرده و `TIKTOK_USERNAME` را ویرایش کنید.
 7. در TikTok LIVE Studio یا OBS یک منبع Browser/Website با آدرس زیر و اندازهٔ 1080 × 1920 اضافه کنید:
 
    http://127.0.0.1:3100/overlay?clean=1
@@ -35,7 +35,7 @@ npm start
 تنظیمات در `.env` (از `.env.example` کپی کنید):
 
 ```dotenv
-TIKTOK_USERNAME=necoo_msn
+TIKTOK_USERNAME=familydramaaf
 PORT=3100
 DEMO_MODE=false
 ```

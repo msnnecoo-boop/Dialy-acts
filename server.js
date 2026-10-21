@@ -8,7 +8,7 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { TikTokLiveConnection, WebcastEvent, ControlEvent } from 'tiktok-live-connector';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), 'public');
-const USERNAME = (process.env.TIKTOK_USERNAME || 'necoo_msn').replace(/^@/, '');
+const USERNAME = (process.env.TIKTOK_USERNAME || 'familydramaaf').replace(/^@/, '');
 const PORT = Number(process.env.PORT || 3100);
 const DEMO = process.env.DEMO_MODE === 'true';
 const server = http.createServer(async (req, res) => {
