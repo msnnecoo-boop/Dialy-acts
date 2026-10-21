@@ -14,6 +14,7 @@ if not exist node_modules (
  )
 )
 if not exist .env copy .env.example .env >nul
+set "TIKTOK_USERNAME=familydramaaf"
 set "DEMO_MODE=true"
 echo Open http://127.0.0.1:3100/overlay in your browser or LIVE Studio.
 echo Keep this window open. Press Ctrl+C to stop.
