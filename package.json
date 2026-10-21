@@ -1,0 +1,19 @@
+{
+  "name": "necoo-live-printer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js",
+    "test": "node --test tests/gifts.test.mjs && node tests/smoke.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "tiktok-live-connector": "^2.1.0",
+    "ws": "^8.18.0",
+    "dotenv": "^16.4.5"
+  }
+}
