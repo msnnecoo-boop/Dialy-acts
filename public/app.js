@@ -40,6 +40,7 @@ function card(item) {
   portrait.append(initial);
   const src = safeAvatar(item.avatar);
   if (src) { const img = element('img', 'card-avatar'); img.alt = item.nickname || item.id; img.decoding = 'async'; img.fetchPriority = 'high'; img.onload = () => { initial.hidden = true; }; img.src = src; img.onerror = () => { img.remove(); initial.hidden = false; }; portrait.append(img); }
+  if (item.tier === 'half' || item.tier === 'full') { const sheen = element('span', 'portrait-sheen'); sheen.setAttribute('aria-hidden', 'true'); portrait.append(sheen); }
   const name = element('div', 'card-name', item.nickname || item.id); name.dir = 'auto';
   const coins = item.totalCoins === null || item.totalCoins === undefined ? 'Gift received' : `${item.totalCoins.toLocaleString()} COINS`;
   el.append(effect, portrait, name, element('div', 'card-handle', '@' + (item.id || 'viewer')), element('div', 'card-gift', `${item.giftName || 'Gift'} ×${item.repeatCount || 1}`), element('div', 'card-coins', coins));
