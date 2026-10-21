@@ -5,6 +5,9 @@ const grid = $('print-grid');
 const capacities = { small: 4, pair: 2, half: 2, full: 1 };
 const pages = [];
 let current = null;
+let displayedPage = null;
+const seenPrints = new Map();
+let motionTimer;
 let pageTimer;
 let socket;
 function safeAvatar(url) { try { const u = new URL(url); return u.protocol === 'https:' ? u.href : ''; } catch { return ''; } }
@@ -12,6 +15,7 @@ function element(tag, className, value) { const el = document.createElement(tag)
 function card(item) {
   const el = element('article', 'print-card');
   el.dataset.tier = item.tier;
+  if (item.printId) el.dataset.printId = item.printId;
   const effect = element('div', 'gift-effect', item.tier === 'full' ? '👑 LEGENDARY' : '✦ SUPER STAR ✦');
   if (item.tier === 'half' || item.tier === 'full') {
     const particles = element('div', 'premium-particles'); particles.setAttribute('aria-hidden', 'true');
@@ -33,6 +37,7 @@ function queueStatus() { $('queue').textContent = `Queue: ${pages.reduce((n,p) =
 function next() {
   if (!pages.length) { current = null; queueStatus(); return; }
   current = pages.shift();
+  displayedPage = current;
   grid.replaceChildren(); grid.dataset.tier = current.tier;
   paper.classList.remove('printing', 'printed'); machine.classList.remove('is-printing');
   current.started = Date.now();
@@ -43,19 +48,52 @@ function next() {
     grid.append(waiting);
   }
   void paper.offsetWidth;
-  paper.classList.add('printing'); machine.classList.add('is-printing');
+  paper.classList.add('printing'); runPrinter();
   queueStatus();
   finishPage(({ small: 1500, pair: 1800, half: 2600, full: 3200 })[current.tier]);
+}
+function runPrinter() {
+  if (machine.classList.contains('is-printing')) return;
+  clearTimeout(motionTimer);
+  machine.classList.remove('is-printing'); void machine.offsetWidth; machine.classList.add('is-printing');
+  motionTimer = setTimeout(() => machine.classList.remove('is-printing'), 1150);
 }
 function finishPage(delay) {
   clearTimeout(pageTimer);
   current.deadline = Date.now() + delay;
-  pageTimer = setTimeout(() => { machine.classList.remove('is-printing'); paper.classList.remove('printing'); paper.classList.add('printed'); current = null; next(); }, delay);
+  pageTimer = setTimeout(() => { paper.classList.remove('printing'); paper.classList.add('printed'); current = null; next(); }, delay);
+}
+function updatePrint(item) {
+  const candidates = [...new Set([current, displayedPage, ...pages].filter(Boolean))];
+  for (const page of candidates) {
+    const index = page.items.findIndex(old => old.printId === item.printId);
+    if (index < 0) continue;
+    if (page.tier === item.tier) {
+      page.items[index] = item;
+      if (page === displayedPage) {
+        const old = [...grid.querySelectorAll('.print-card')].find(el => el.dataset.printId === item.printId);
+        old?.replaceWith(card(item)); runPrinter();
+      }
+      return true;
+    }
+    page.items.splice(index, 1);
+    if (page === displayedPage) [...grid.querySelectorAll('.print-card')].find(el => el.dataset.printId === item.printId)?.remove();
+    if (!page.items.length) {
+      const queuedIndex = pages.indexOf(page); if (queuedIndex >= 0) pages.splice(queuedIndex, 1);
+      if (page === current) { clearTimeout(pageTimer); current = null; }
+    }
+    return false;
+  }
+  // Do not reprint a completed, no-longer-visible sheet for every count update.
+  return seenPrints.get(item.printId) === item.tier;
 }
 function enqueue(item) {
   item.tier = capacities[item.tier] ? item.tier : 'small';
+  if (item.printId && updatePrint(item)) return;
+  if (item.printId) { seenPrints.set(item.printId, item.tier); if (seenPrints.size > 1000) seenPrints.delete(seenPrints.keys().next().value); }
   if (current && current.tier === item.tier && current.items.length < capacities[item.tier]) {
     current.items.push(item);
+    runPrinter();
     const waiting = grid.querySelector('.waiting-slot');
     if (waiting) waiting.replaceWith(card(item)); else grid.append(card(item));
     const deadline = Math.min(current.started + 4000, Math.max(current.deadline, Date.now() + 700));
@@ -76,7 +114,7 @@ function enqueue(item) {
 function demo(tier = 'small', batch = false) { if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'demo', tier, batch })); }
 function connect() {
   socket = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}`);
-  socket.onmessage = ev => { try { const m = JSON.parse(ev.data); if (m.type === 'gift') enqueue(m); if (m.type === 'status') { $('status').textContent = 'FAST XL • ' + m.status + (m.demo ? ' • D: test gifts' : ''); $('demo-button').hidden = !m.demo; const mode = m.demo ? 'DEMO • آزمایشی' : m.connected ? 'LIVE • متصل' : 'OFFLINE • قطع'; $('connection-indicator').textContent = mode; $('connection-indicator').dataset.state = m.demo ? 'demo' : m.connected ? 'live' : 'offline'; document.querySelector('.live-badge').textContent = mode; } } catch (err) { console.error('Overlay message failed', err); } };
+  socket.onmessage = ev => { try { const m = JSON.parse(ev.data); if (m.type === 'gift' || m.type === 'gift-update') enqueue(m); if (m.type === 'status') { $('status').textContent = 'FAST XL • ' + m.status + (m.demo ? ' • D: test gifts' : ''); $('demo-button').hidden = !m.demo; const mode = m.demo ? 'DEMO • آزمایشی' : m.connected ? 'LIVE • متصل' : 'OFFLINE • قطع'; $('connection-indicator').textContent = mode; $('connection-indicator').dataset.state = m.demo ? 'demo' : m.connected ? 'live' : 'offline'; document.querySelector('.live-badge').textContent = mode; } } catch (err) { console.error('Overlay message failed', err); } };
   socket.onclose = () => { $('connection-indicator').textContent = 'OFFLINE • قطع'; $('connection-indicator').dataset.state = 'offline'; document.querySelector('.live-badge').textContent = 'OFFLINE'; $('demo-button').hidden = true; $('status').textContent = 'Reconnecting overlay...'; setTimeout(connect, 2500); };
 }
 connect();

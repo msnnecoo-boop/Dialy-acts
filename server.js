@@ -1,5 +1,5 @@
 import { liveOptions, requiresProviderAccess } from './connection.js';
-import { normalizeGift, isPendingStreak } from './gifts.js';
+import { createGiftTracker } from './gifts.js';
 import 'dotenv/config';
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -47,17 +47,14 @@ wss.on('connection', ws => {
   });
 });
 function status(message, isConnected = false) { connected = isConnected; lastStatus = message; console.log('[TikTok]', message); send({ type: 'status', connected, status: message, username: USERNAME, demo: DEMO }); }
-const recent = new Map();
+const trackGift = createGiftTracker();
 function emitGift(evt) {
-  const key = evt.event?.msgId || evt.msgId || null;
-  const now = Date.now();
-  if (key && recent.has(key)) return;
-  if (key) recent.set(key, now);
-  if (recent.size > 500) for (const [k, t] of recent) if (now - t > 60000) recent.delete(k);
-  const gift = normalizeGift(evt, now);
+  const gift = trackGift(evt);
+  if (!gift) return;
   send(gift);
-  console.log(`[Gift] ${gift.nickname} → ${gift.giftName} x${gift.repeatCount}`);
+  console.log(`[${gift.type === 'gift-update' ? 'Gift update' : 'Gift'}] ${gift.nickname} → ${gift.giftName} x${gift.repeatCount}`);
 }
+
 if (!DEMO) {
   const live = new TikTokLiveConnection(USERNAME, liveOptions());
   let reconnectTimer;
@@ -84,8 +81,7 @@ if (!DEMO) {
     reconnectTimer = setTimeout(() => { reconnectTimer = null; connect(); }, wait);
   }
   live.on(WebcastEvent.GIFT, event => {
-    // Streak gifts emit updates; print only after the streak is finished.
-    if (isPendingStreak(event)) return;
+    // Display the first gift immediately; update its existing print during a streak.
     emitGift(event);
   });
   live.on(ControlEvent.DISCONNECTED, () => { status('Disconnected — reconnecting'); schedule(); });
