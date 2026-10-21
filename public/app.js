@@ -2,7 +2,7 @@ const $ = id => document.getElementById(id);
 const paper = $('paper');
 const machine = document.querySelector('.machine');
 const grid = $('print-grid');
-const capacities = { small: 6, pair: 2, half: 2, full: 1 };
+const capacities = { small: 4, pair: 2, half: 2, full: 1 };
 const pages = [];
 let current = null;
 let pageTimer;
@@ -45,7 +45,7 @@ function next() {
   void paper.offsetWidth;
   paper.classList.add('printing'); machine.classList.add('is-printing');
   queueStatus();
-  finishPage(({ small: 2000, pair: 2500, half: 3500, full: 4500 })[current.tier]);
+  finishPage(({ small: 1500, pair: 1800, half: 2600, full: 3200 })[current.tier]);
 }
 function finishPage(delay) {
   clearTimeout(pageTimer);
@@ -58,7 +58,7 @@ function enqueue(item) {
     current.items.push(item);
     const waiting = grid.querySelector('.waiting-slot');
     if (waiting) waiting.replaceWith(card(item)); else grid.append(card(item));
-    const deadline = Math.min(current.started + 6000, Math.max(current.deadline, Date.now() + 1000));
+    const deadline = Math.min(current.started + 4000, Math.max(current.deadline, Date.now() + 700));
     finishPage(Math.max(0, deadline - Date.now()));
     return;
   }
@@ -70,18 +70,18 @@ function enqueue(item) {
   else {
     // Under load, finish the current sheet promptly while preserving a minimum viewing time.
     const remaining = Math.max(0, current.deadline - Date.now());
-    finishPage(Math.min(remaining, Math.max(500, current.started + 1000 - Date.now())));
+    finishPage(Math.min(remaining, Math.max(250, current.started + (current.tier === 'full' ? 1200 : current.tier === 'half' ? 1000 : 650) - Date.now())));
   }
 }
 function demo(tier = 'small', batch = false) { if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'demo', tier, batch })); }
 function connect() {
   socket = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}`);
-  socket.onmessage = ev => { try { const m = JSON.parse(ev.data); if (m.type === 'gift') enqueue(m); if (m.type === 'status') { $('status').textContent = m.status + (m.demo ? ' • D: test gifts' : ''); $('demo-button').hidden = !m.demo; } } catch (err) { console.error('Overlay message failed', err); } };
+  socket.onmessage = ev => { try { const m = JSON.parse(ev.data); if (m.type === 'gift') enqueue(m); if (m.type === 'status') { $('status').textContent = 'FAST XL • ' + m.status + (m.demo ? ' • D: test gifts' : ''); $('demo-button').hidden = !m.demo; } } catch (err) { console.error('Overlay message failed', err); } };
   socket.onclose = () => { $('status').textContent = 'Reconnecting overlay...'; setTimeout(connect, 2500); };
 }
 connect();
 document.addEventListener('keydown', ev => { if (ev.key.toLowerCase() === 'd' && !ev.repeat) demo('small', true); });
 $('demo-button').addEventListener('click', ev => { const button = ev.target.closest('button[data-tier]'); if (button) demo(button.dataset.tier, button.dataset.batch === 'true'); });
 const params = new URLSearchParams(location.search);
-if (params.get('clean') === '1') document.querySelector('.bottom').hidden = true;
+if (params.get('clean') === '1') { document.querySelector('.bottom').hidden = true; document.documentElement.classList.add('studio'); }
 if (params.get('transparent') === '1') document.documentElement.classList.add('transparent');

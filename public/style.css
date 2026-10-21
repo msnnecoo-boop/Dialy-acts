@@ -93,3 +93,22 @@ html.transparent,html.transparent body{background:transparent}
 .is-printing .gantry{animation-duration:.7s}.is-printing .print-head{animation-duration:.16s;animation-iteration-count:4}
 [data-tier=full] .print-card{animation-duration:.35s}
 @keyframes quick-ink{from{opacity:.65;clip-path:inset(0);transform:translateY(-3px)}to{opacity:1;clip-path:inset(0);transform:translateY(0)}}
+
+/* FAST XL: larger ink area, four clear basic portraits, lightweight capture. */
+.print-grid[data-tier=small]{grid-template-rows:repeat(2,minmax(0,1fr));gap:2%}
+[data-tier=small] .card-portrait{width:min(90cqw,65cqh)}
+[data-tier=small] .card-name{font-size:min(19cqw,15cqh);font-weight:900;line-height:1.25}
+[data-tier=small] .card-gift{font-size:min(13cqw,10cqh)}
+.printing .print-grid{animation-duration:.12s}
+.is-printing .gantry{animation-duration:.35s}.is-printing .print-head{animation-duration:.08s}
+[data-tier=full] .print-card{animation-duration:.2s}
+.studio .brand{display:none}.studio .machine{top:1%;height:98%;left:1%;right:1%;max-width:88vh;filter:none}
+.studio .machine-top{height:6%;border-radius:12px 12px 3px 3px;padding:0 4%}
+.studio .print-bed{height:90%;border-left-width:7px;border-right-width:7px}
+.studio .machine-bottom{height:4%;border-radius:3px 3px 12px 12px;padding:0 4%}
+.studio .machine-name{font-size:clamp(10px,min(2.6vw,2.2vh),26px)}
+.studio .paper{top:1%;bottom:0;left:6%;right:6%;box-shadow:2px 3px 5px #0004}
+.studio .print-grid{inset:3% 3% 4%}.studio .paper-guide{opacity:.25}
+.studio .label{font-size:clamp(7px,1.1vh,16px)}.studio .rail{width:8px}
+.studio .print-head{min-height:20px}.studio .gantry{height:5%}
+@media(max-aspect-ratio:1/1){.studio .machine{max-width:none}}
