@@ -32,11 +32,12 @@ function send(payload) {
   const msg = JSON.stringify(payload);
   for (const ws of wss.clients) if (ws.readyState === WebSocket.OPEN) ws.send(msg);
 }
-wss.on('connection', ws => {
+wss.on('connection', (ws, req) => {
   ws.send(JSON.stringify({ type: 'status', connected, status: lastStatus, username: USERNAME, demo: DEMO }));
   ws.on('message', data => {
     // Demo is restricted to the local host; external viewers cannot trigger fake gifts.
-    if (!DEMO) return;
+    if (!DEMO || req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']) return;
+    if (req.headers.origin) { try { if (!['127.0.0.1', 'localhost', '[::1]'].includes(new URL(req.headers.origin).hostname)) return; } catch { return; } }
     try {
       const m = JSON.parse(data);
       if (m.type !== 'demo') return;
