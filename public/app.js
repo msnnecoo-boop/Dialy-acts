@@ -12,11 +12,23 @@ let pageTimer;
 let socket;
 function safeAvatar(url) { try { const u = new URL(url); return u.protocol === 'https:' ? u.href : ''; } catch { return ''; } }
 function element(tag, className, value) { const el = document.createElement(tag); el.className = className; if (value !== undefined) el.textContent = value; return el; }
+function designMark(kind) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 64 64'); svg.setAttribute('class', 'design-mark'); svg.setAttribute('aria-hidden', 'true');
+  const shapes = kind === 'full'
+    ? ['M8 20 21 30 32 12 43 30 56 20 49 47H15Z', 'M17 53H47', 'M32 34V42']
+    : ['M32 5 39 23 59 25 44 39 48 59 32 49 16 59 20 39 5 25 25 23Z', 'M25 32 30 38 40 26'];
+  for (const d of shapes) { const path = document.createElementNS(svg.namespaceURI, 'path'); path.setAttribute('d', d); svg.append(path); }
+  return svg;
+}
 function card(item) {
   const el = element('article', 'print-card');
   el.dataset.tier = item.tier;
   if (item.printId) el.dataset.printId = item.printId;
-  const effect = element('div', 'gift-effect', item.tier === 'full' ? '👑 LEGENDARY' : '✦ SUPER STAR ✦');
+  const effect = element('div', 'gift-effect', item.tier === 'full' ? 'LEGENDARY' : 'SUPER STAR');
+  if (item.tier === 'full' || item.tier === 'half') effect.prepend(designMark(item.tier));
+  else el.append(element('div', 'edition-badge', item.tier === 'pair' ? 'DUO / 02' : 'LIVE PRINT'));
+  el.append(element('div', 'design-corners')); 
   if (item.tier === 'half' || item.tier === 'full') {
     const particles = element('div', 'premium-particles'); particles.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < 12; i++) { const star = element('span', '', i % 3 === 0 ? '✧' : '✦'); star.style.setProperty('--i', i); particles.append(star); }
@@ -27,7 +39,7 @@ function card(item) {
   const initial = element('div', 'card-initial', Array.from(item.nickname || item.id || '♥')[0].toUpperCase());
   portrait.append(initial);
   const src = safeAvatar(item.avatar);
-  if (src) { const img = element('img', 'card-avatar'); img.alt = item.nickname || item.id; img.decoding = 'async'; img.fetchPriority = 'high'; img.src = src; img.onerror = () => img.remove(); portrait.append(img); }
+  if (src) { const img = element('img', 'card-avatar'); img.alt = item.nickname || item.id; img.decoding = 'async'; img.fetchPriority = 'high'; img.onload = () => { initial.hidden = true; }; img.src = src; img.onerror = () => { img.remove(); initial.hidden = false; }; portrait.append(img); }
   const name = element('div', 'card-name', item.nickname || item.id); name.dir = 'auto';
   const coins = item.totalCoins === null || item.totalCoins === undefined ? 'Gift received' : `${item.totalCoins.toLocaleString()} COINS`;
   el.append(effect, portrait, name, element('div', 'card-handle', '@' + (item.id || 'viewer')), element('div', 'card-gift', `${item.giftName || 'Gift'} ×${item.repeatCount || 1}`), element('div', 'card-coins', coins));
@@ -38,6 +50,7 @@ function next() {
   if (!pages.length) { current = null; queueStatus(); return; }
   current = pages.shift();
   displayedPage = current;
+  machine.dataset.tier = current.tier;
   grid.replaceChildren(); grid.dataset.tier = current.tier; grid.dataset.count = current.items.length;
   paper.classList.remove('printing', 'printed'); machine.classList.remove('is-printing');
   current.started = Date.now();

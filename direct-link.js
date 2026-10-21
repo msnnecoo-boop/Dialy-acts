@@ -48,7 +48,7 @@ export async function main() {
   async function health() { try { const r = await fetch(`${local}/health`, { signal: AbortSignal.timeout(1000) }); if (!r.ok) return null; return await r.json(); } catch { return null; } }
   try {
     let state = await health();
-    if (state && (state.username !== username || state.demo !== false)) throw new Error(`Port ${port} is running another account or DEMO. Stop that printer with Ctrl+C first. No process was terminated.`);
+    if (state && (state.username !== username || state.demo !== false || state.build !== 'atelier-1')) throw new Error(`Port ${port} is running another account, DEMO, or an older printer version. Stop that printer with Ctrl+C first. No process was terminated.`);
     if (!state) {
       serverProcess = spawn(process.execPath, ['server.js'], { cwd: ROOT, env: { ...process.env, PORT: String(port), TIKTOK_USERNAME: username, DEMO_MODE: 'false', EXTENDED_GIFT_INFO: 'false' }, stdio: 'inherit' });
       for (let i = 0; i < 80; i++) { if (serverProcess.exitCode !== null) break; state = await health(); if (state) break; await new Promise(r => setTimeout(r, 100)); }

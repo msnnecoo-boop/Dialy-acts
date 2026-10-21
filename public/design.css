@@ -1,0 +1,64 @@
+/* ATELIER — distinct visual identities; geometry and live timing stay in app.js. */
+:root{--ink:#171b21;--champagne:#e9c988;--aqua:#66f4e8;--violet:#bf85ff}
+html,body{background:#090d12}.machine-top{border-color:#667278;background:linear-gradient(180deg,#737c7f 0,#343e44 3%,#111a21 16%,#19252d 75%,#556268 95%,#a6adaa 98%,#1a252b 100%);box-shadow:inset 1px 1px #e6ecec44,0 8px 16px #0008}
+.machine-top::before{content:'';position:absolute;left:7%;right:7%;top:0;height:2px;background:linear-gradient(90deg,transparent,#d5c091bb,transparent);pointer-events:none}
+.machine-name{font-weight:700;letter-spacing:.02em;color:#f1eee5}.print-bed{background:repeating-linear-gradient(0deg,#35231b 0,#3c2920 2px,#493126 4px,#3c2820 9px);box-shadow:inset 0 7px 16px #000b}.paper{background:linear-gradient(112deg,#e5d7b6,#fff7df 30%,#f0e5cb 74%,#dfd0ae);border-radius:2px 2px 8% 2% / 2px 2px 2% 1%}.paper::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,#6b573002 0,#6b573002 1px,transparent 1px,transparent 4px);pointer-events:none}.idle-mark{color:#8e754712;font-family:Georgia,serif;font-weight:400;letter-spacing:0}.idle-mark span{font-family:Arial,sans-serif;color:#8c7c5866;font-size:clamp(8px,1.3vw,16px);letter-spacing:.18em}
+.machine-bottom{border-color:#58666c;background:linear-gradient(180deg,#536069,#222e35 12%,#111b22 75%,#2e3c43);box-shadow:inset 0 1px #d8e2e344,0 5px 12px #0005}.machine-bottom .label{color:#ccd1cd;font-weight:700;letter-spacing:.12em}.rail{background:linear-gradient(90deg,#122129,#67797f 25%,#e4ece9 45%,#71848a 62%,#1d3038);box-shadow:2px 0 6px #0007}.print-head{border-color:#b4beba;border-radius:8px;background:linear-gradient(145deg,#9caaa9,#53676b 10%,#20353d 45%,#0c2029 85%,#40606b);box-shadow:0 4px 12px #0008,inset 0 1px #eefff266}.crossbar{height:10px;border-color:#102028;background:linear-gradient(#dce7e4,#5b737a 30%,#e5eeeb 48%,#405a63 80%)}
+.print-card{isolation:isolate}.design-corners{position:absolute;inset:3%;z-index:3;pointer-events:none;border:1px solid #b99a5833;clip-path:polygon(0 0,16% 0,16% 1%,1% 1%,1% 16%,0 16%,0 0,100% 0,100% 16%,99% 16%,99% 1%,84% 1%,84% 0,100% 0,100% 100%,84% 100%,84% 99%,99% 99%,99% 84%,100% 84%,100% 100%,0 100%,0 84%,1% 84%,1% 99%,16% 99%,16% 100%,0 100%)}
+.edition-badge{position:absolute;top:3%;left:5%;font-size:min(4cqw,3.6cqh);font-weight:800;letter-spacing:.18em;color:#8b7758;line-height:1.2;z-index:2}
+/* 01 — warm archival print: quiet, clear, and intentionally static. */
+[data-tier=small] .print-card{background:linear-gradient(150deg,#fffef7,#f7eddb);border:1px solid #fff6;box-shadow:0 3px 8px #6e4d2520;border-radius:3px;gap:3%;padding-top:9%;padding-bottom:5%;animation:none}
+[data-tier=small] .card-portrait{border-radius:8px;border:4px solid #fff;box-shadow:0 1px 6px #493d2b33;outline:1px solid #e3d5bb;width:min(88cqw,59cqh);background:#273841}
+[data-tier=small] .card-avatar,[data-tier=small] .card-initial{border-radius:4px}.card-initial{font-family:Georgia,serif}
+[data-tier=small] .card-initial{background:linear-gradient(145deg,#637176,#243b45);color:#f1e4c8}
+[data-tier=small] .card-name{font-family:Arial,'Segoe UI',sans-serif;letter-spacing:-.035em;color:#19262d;font-size:min(18cqw,14cqh)}
+[data-tier=small] .card-gift{color:#8c6740;font-size:min(11cqw,9cqh);font-weight:600;letter-spacing:.02em}
+/* 02 — copper duo: a soft photo drift and a restrained foil finish. */
+[data-tier=pair] .print-card{border:1px solid #d5b69a;border-radius:16px;background:linear-gradient(155deg,#fff7ed,#f0d6c2 72%,#f9e9d8);box-shadow:0 5px 16px #643b2222;justify-content:center;gap:3%;height:76%}
+[data-tier=pair] .edition-badge{color:#9d6f4c;font-size:4.5cqw;top:4%}
+[data-tier=pair] .card-portrait{width:83%;border:4px solid #fdf1df;outline:1px solid #b08b64;border-radius:44% 44% 10px 10px;box-shadow:0 8px 12px #5f3d282b}
+[data-tier=pair] .card-avatar,[data-tier=pair] .card-initial{border-radius:43% 43% 7px 7px}
+[data-tier=pair] .card-initial{background:linear-gradient(145deg,#b79779,#674e47);color:#fff2d8}
+[data-tier=pair] .card-name{font-family:Georgia,'Segoe UI',serif;font-size:14cqw;color:#563b30;font-weight:700;letter-spacing:-.03em;margin-top:7%}
+[data-tier=pair] .card-handle{color:#9b7660;font-size:6cqw}[data-tier=pair] .card-gift{color:#79503b;font-size:8cqw}[data-tier=pair] .card-coins{color:#a27c57;font-size:5cqw}
+/* 100 — cyan/violet holographic medallions, one per half-sheet. */
+[data-tier=half] .print-card{border:1px solid #64e4e6;border-radius:17px;background:radial-gradient(ellipse at 50% 22%,#233a5e,#10182e 65%,#090d1c);box-shadow:inset 0 0 28px #5cd9ff17,0 0 14px #32b1c333}
+[data-tier=half] .print-card:nth-child(2){border-color:#c47cf5;background:radial-gradient(ellipse at 50% 22%,#45325f,#20132f 65%,#110e20);box-shadow:inset 0 0 28px #bd70ff17,0 0 14px #a45fc333}
+[data-tier=half] .design-corners{border-color:#b7e9ff88;inset:3%}
+[data-tier=half] .card-portrait{top:18%;width:min(52cqh,49cqw);border:3px solid #c9fffb;outline:1px solid #70d5ef;outline-offset:6px;box-shadow:0 0 12px #4edbdc99}
+[data-tier=half] .premium-orbit{top:16%;width:min(57cqh,54cqw);border:1px dashed #a4e6f599}
+[data-tier=half] .card-portrait::after{content:'';position:absolute;inset:-14px;border:2px solid transparent;border-top-color:#a9f9ed;border-bottom-color:#bc85ff;border-radius:50%;animation:medallion-spin 6s linear infinite;pointer-events:none}
+[data-tier=half] .gift-effect{top:4%;font-size:min(3.4cqw,5.2cqh);letter-spacing:.24em;display:flex;align-items:center;justify-content:center;gap:9px}
+.design-mark{width:1.7em;height:1.7em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+[data-tier=half] .card-name{font-size:min(9.5cqw,13.5cqh);bottom:22%;letter-spacing:-.02em;background:linear-gradient(100deg,#fff,#91fff3 35%,#ce8bff 60%,#fff);background-size:230% 100%;background-clip:text;-webkit-background-clip:text}
+[data-tier=half] .card-gift{bottom:8%;font-size:min(4.6cqw,7cqh);letter-spacing:.04em}
+[data-tier=half] .premium-flash{opacity:.6}[data-tier=half] .premium-particles span{color:#c0f8fd;opacity:.5}
+/* 500 — obsidian and gold: heraldic crown, light sweep, slow cinematic image. */
+[data-tier=full] .print-card{border:2px solid #d7b36e;border-radius:10px;background:#0e1119;box-shadow:inset 0 0 30px #ba96512a,0 0 15px #deb46166}
+[data-tier=full] .design-corners{inset:3%;border:2px solid #f1d59a;z-index:5}
+[data-tier=full] .card-initial{background:radial-gradient(ellipse at 50% 24%,#4b4437,#1b1d28 50%,#0a0e18);color:#d9bd83;font-family:Georgia,serif;font-weight:400}
+[data-tier=full] .gift-effect{top:4%;display:flex;flex-direction:column;gap:8px;align-items:center;font-size:3.3cqw;letter-spacing:.38em;color:#f2d8a5;animation:royal-seal 4s ease-in-out infinite}
+[data-tier=full] .gift-effect .design-mark{width:2.8em;height:2.8em;stroke-width:1.4;filter:drop-shadow(0 0 6px #eacb8766)}
+[data-tier=full] .premium-orbit{background:repeating-conic-gradient(transparent 0deg 21deg,#e8c47517 22deg 25deg,transparent 26deg 45deg);animation-duration:40s}
+[data-tier=full] .print-card::before{inset:30% 0 0;background:linear-gradient(transparent,#080d1b99 40%,#080d1bf5 85%);z-index:1}
+[data-tier=full] .card-name{bottom:23%;font-family:Georgia,'Segoe UI',serif;font-size:12cqw;font-weight:700;letter-spacing:-.045em;line-height:1.3;filter:drop-shadow(0 2px 2px #000);background:linear-gradient(105deg,#b58d45,#f7dfae 25%,#fff3cf 40%,#d5b06c 60%,#fce7b4 80%);background-size:240% 100%;background-clip:text;-webkit-background-clip:text}
+[data-tier=full] .card-handle{font-size:4.1cqw;bottom:18%;letter-spacing:.08em;color:#c7b38a}
+[data-tier=full] .card-gift{font-size:5.5cqw;bottom:10%;color:#f2ddaf;letter-spacing:.03em}
+[data-tier=full] .card-coins{font-size:3.5cqw;bottom:5%;color:#c7a86c;letter-spacing:.24em}
+[data-tier=full] .premium-particles span{font-size:clamp(10px,2vw,24px);color:#f3dca4}
+/* The tier guide is designed as four material swatches. */
+.gift-guide>div{border-radius:12px;border:1px solid #746248;background:linear-gradient(145deg,#25313a,#131e26);box-shadow:inset 0 1px #d8e4e222,0 3px 7px #0003}
+.gift-guide>div:nth-child(1){border-color:#d7c5a8;background:linear-gradient(140deg,#faf3e1,#dccdb3);color:#3c3930}.gift-guide>div:nth-child(1) small{color:#705b3d}
+.gift-guide>div:nth-child(2){border-color:#ad8161;background:linear-gradient(140deg,#f0d7c0,#a57e67);color:#4d332a}.gift-guide>div:nth-child(2) small{color:#5c3d30}
+.gift-guide>div:nth-child(3){border-color:#7adddf;background:linear-gradient(135deg,#133741,#302044);color:#bcfbf4}.gift-guide>div:nth-child(3) small{color:#d2c5fa}
+.gift-guide>div:nth-child(4){border-color:#c7a25b;background:linear-gradient(140deg,#393328,#141925);color:#f3dba9}.gift-guide>div:nth-child(4) small{color:#d3b780}
+.gift-guide strong{font-weight:900;letter-spacing:-.02em}.gift-guide small{font-weight:700;letter-spacing:.04em}
+.waiting-slot{border:1px dashed #7c799b;border-radius:17px;background:radial-gradient(ellipse,#27273f,#111827);color:#c8c4da}.waiting-symbol{color:#96c4ce}
+@keyframes medallion-spin{to{transform:rotate(360deg)}}@keyframes royal-seal{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(-5px);opacity:1}}
+@media(prefers-reduced-motion:reduce){.card-portrait,.card-avatar,.card-initial,.card-name,.gift-effect,.premium-orbit,.premium-flash,.premium-particles span,.card-portrait::after{animation:none!important}}
+.machine[data-tier=pair] .machine-top::before{background:linear-gradient(90deg,transparent,#e0ad88,transparent)}
+.machine[data-tier=half] .machine-top::before{background:linear-gradient(90deg,transparent,#69e9ed,#b485f2,transparent)}
+.machine[data-tier=full] .machine-top::before{background:linear-gradient(90deg,transparent,#ffdfa0,transparent)}
+.machine[data-tier=small]+.gift-guide>div:nth-child(1),.machine[data-tier=pair]+.gift-guide>div:nth-child(2),.machine[data-tier=half]+.gift-guide>div:nth-child(3),.machine[data-tier=full]+.gift-guide>div:nth-child(4){outline:2px solid #f2deae;outline-offset:2px}
+
+.card-initial{overflow:hidden;line-height:1}.card-avatar{display:block}
