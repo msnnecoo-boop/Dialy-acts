@@ -34,3 +34,5 @@ html.transparent,html.transparent body{background:transparent}
 [data-tier=half] .card-coins,[data-tier=full] .card-coins{position:absolute;bottom:3%;color:#eed19a;z-index:2}
 [data-tier=half] .gift-effect,[data-tier=full] .gift-effect{z-index:3;color:#ffe09c;text-shadow:0 2px 6px #000}
 [data-tier=full] .print-card::after{z-index:3;bottom:42%}
+
+.brand-copy{min-width:0;font-size:clamp(15px,3.2vw,38px);letter-spacing:.015em;line-height:1.15;max-width:75%}.brand-mark{flex-shrink:0;font-size:clamp(18px,3vw,32px)}.live-badge{flex-shrink:0}.machine-name{font-size:clamp(12px,2.6vw,30px);letter-spacing:.015em;line-height:1.2}.top-detail{display:none}@media(min-aspect-ratio:1/1){.brand-copy{font-size:2.6vh}.machine-name{font-size:2.6vh}.brand-mark{font-size:2.6vh}}
