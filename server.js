@@ -1,5 +1,5 @@
 import { liveOptions, requiresProviderAccess } from './connection.js';
-import { normalizeGift, isPendingStreak } from './gifts.js';
+import { createGiftTracker } from './gifts.js';
 import 'dotenv/config';
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -14,8 +14,8 @@ const PORT = Number(process.env.PORT || 3100);
 const DEMO = process.env.DEMO_MODE === 'true';
 const server = http.createServer(async (req, res) => {
   const route = new URL(req.url, `http://${req.headers.host || 'localhost'}`).pathname;
-  if (route === '/health') { res.writeHead(200, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ connected, status: lastStatus, username: USERNAME, demo: DEMO })); return; }
-  const files = { '/': 'index.html', '/overlay': 'index.html', '/app.js': 'app.js', '/style.css': 'style.css' };
+  if (route === '/health') { res.writeHead(200, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ connected, status: lastStatus, username: USERNAME, demo: DEMO, build: "atelier-1" })); return; }
+  const files = { '/': 'index.html', '/overlay': 'index.html', '/setup': 'setup.html', '/app.js': 'app.js', '/style.css': 'style.css', '/design.css': 'design.css' };
   const file = files[route];
   if (!file) { res.writeHead(404); res.end('Not found'); return; }
   try {
@@ -32,32 +32,30 @@ function send(payload) {
   const msg = JSON.stringify(payload);
   for (const ws of wss.clients) if (ws.readyState === WebSocket.OPEN) ws.send(msg);
 }
-wss.on('connection', ws => {
+wss.on('connection', (ws, req) => {
   ws.send(JSON.stringify({ type: 'status', connected, status: lastStatus, username: USERNAME, demo: DEMO }));
   ws.on('message', data => {
     // Demo is restricted to the local host; external viewers cannot trigger fake gifts.
-    if (!DEMO) return;
+    if (!DEMO || req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for']) return;
+    if (req.headers.origin) { try { if (!['127.0.0.1', 'localhost', '[::1]'].includes(new URL(req.headers.origin).hostname)) return; } catch { return; } }
     try {
       const m = JSON.parse(data);
       if (m.type !== 'demo') return;
-      const coins = ({ full: 500, half: 100, pair: 10, small: 1 })[m.tier] || 1;
-      const count = m.batch === true ? (coins === 1 ? 6 : 2) : 1;
+      const coins = ({ full: 500, diamond: 1000, galactic: 5000, half: 100, pair: 10, small: 1 })[m.tier] || 1;
+      const count = m.batch === true ? (coins === 1 ? 4 : 2) : 1;
       for (let i = 0; i < count; i++) emitGift({ uniqueId: count === 1 ? 'demo_viewer' : `demo_viewer_${i + 1}`, nickname: count === 1 ? 'Demo Viewer' : `Viewer ${i + 1}`, profilePictureUrl: '', giftName: coins === 1 ? 'Rose' : 'Demo Gift', diamondCount: coins, repeatCount: 1, giftId: 5655 });
     } catch {}
   });
 });
 function status(message, isConnected = false) { connected = isConnected; lastStatus = message; console.log('[TikTok]', message); send({ type: 'status', connected, status: message, username: USERNAME, demo: DEMO }); }
-const recent = new Map();
+const trackGift = createGiftTracker();
 function emitGift(evt) {
-  const key = evt.event?.msgId || evt.msgId || null;
-  const now = Date.now();
-  if (key && recent.has(key)) return;
-  if (key) recent.set(key, now);
-  if (recent.size > 500) for (const [k, t] of recent) if (now - t > 60000) recent.delete(k);
-  const gift = normalizeGift(evt, now);
+  const gift = trackGift(evt);
+  if (!gift) return;
   send(gift);
-  console.log(`[Gift] ${gift.nickname} → ${gift.giftName} x${gift.repeatCount}`);
+  console.log(`[${gift.type === 'gift-update' ? 'Gift update' : 'Gift'}] ${gift.nickname} → ${gift.giftName} x${gift.repeatCount}`);
 }
+
 if (!DEMO) {
   const live = new TikTokLiveConnection(USERNAME, liveOptions());
   let reconnectTimer;
@@ -84,8 +82,7 @@ if (!DEMO) {
     reconnectTimer = setTimeout(() => { reconnectTimer = null; connect(); }, wait);
   }
   live.on(WebcastEvent.GIFT, event => {
-    // Streak gifts emit updates; print only after the streak is finished.
-    if (isPendingStreak(event)) return;
+    // Display the first gift immediately; update its existing print during a streak.
     emitGift(event);
   });
   live.on(ControlEvent.DISCONNECTED, () => { status('Disconnected — reconnecting'); schedule(); });

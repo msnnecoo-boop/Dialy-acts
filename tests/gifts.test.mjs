@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import {normalizeGift,isPendingStreak} from '../gifts.js';
+import {normalizeGift,isPendingStreak,createGiftTracker} from '../gifts.js';
 test('upstream nested gift events retain sender photo and gift details',()=>{
  const event={user:{uniqueId:'viewer',nickname:'بیننده',profilePicture:{urls:['https://example.com/avatar.jpg']}},giftDetails:{giftName:'Rose',giftType:1},repeatCount:3,repeatEnd:0};
  assert.equal(isPendingStreak(event),true);
@@ -27,4 +27,29 @@ test('coin thresholds and repeated gift totals determine print size',()=>{
 test('prefer available high resolution avatar and skip unsafe candidates',()=>{
  assert.equal(normalizeGift({profilePictureUrl:'https://example.com/small.jpg',user:{avatarLarge:{urlList:['https://example.com/large.jpg']}}}).avatar,'https://example.com/large.jpg');
  assert.equal(normalizeGift({user:{avatarLarge:{urlList:['javascript:bad']},avatarMedium:{url:['https://example.com/medium.jpg']}}}).avatar,'https://example.com/medium.jpg');
+});
+
+test('first streak gift prints immediately, updates retain identity and final does not duplicate',()=>{
+ const track=createGiftTracker();
+ const base={uniqueId:'viewer',giftId:5655,groupId:'one',giftType:1,diamondCount:1};
+ const first=track({...base,repeatCount:1,repeatEnd:0,msgId:'a'},1000);
+ assert.equal(first.type,'gift');assert.equal(first.final,false);assert.equal(first.repeatCount,1);
+ const next=track({...base,repeatCount:100,repeatEnd:0,msgId:'b'},1100);
+ assert.equal(next.type,'gift-update');assert.equal(next.printId,first.printId);assert.equal(next.tier,'half');
+ const vip=track({...base,repeatCount:500,repeatEnd:0,msgId:'c'},1200);
+ assert.equal(vip.printId,first.printId);assert.equal(vip.tier,'full');
+ assert.equal(track({...base,repeatCount:500,repeatEnd:1,msgId:'d'},1300),null);
+ assert.equal(track({...base,repeatCount:500,repeatEnd:1,msgId:'e'},1400),null);
+ const second=track({...base,groupId:'two',repeatCount:1,repeatEnd:0,msgId:'f'},1500);
+ assert.notEqual(second.printId,first.printId);assert.equal(second.type,'gift');
+});
+test('streaks without group IDs and two viewers remain independent',()=>{
+ const track=createGiftTracker();
+ const a=track({uniqueId:'a',giftType:1,giftId:1,repeatCount:1,repeatEnd:0},1000);
+ const b=track({uniqueId:'b',giftType:1,giftId:1,repeatCount:1,repeatEnd:0},1100);
+ assert.notEqual(a.printId,b.printId);
+ const updated=track({uniqueId:'a',giftType:1,giftId:1,repeatCount:2,repeatEnd:1},1200);
+ assert.equal(updated.printId,a.printId);assert.equal(updated.type,'gift-update');
+ const fresh=track({uniqueId:'a',giftType:1,giftId:1,repeatCount:1,repeatEnd:0},1300);
+ assert.notEqual(fresh.printId,a.printId);
 });

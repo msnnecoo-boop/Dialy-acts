@@ -18,3 +18,37 @@ export function normalizeGift(evt, timestamp = Date.now()) {
   const tier = totalCoins >= 500 ? 'full' : totalCoins >= 100 ? 'half' : totalCoins >= 10 ? 'pair' : 'small';
   return { unitCoins, totalCoins, tier, type: 'gift', id, nickname, giftName, avatar: typeof avatar === 'string' && /^https:\/\//i.test(avatar) ? avatar : '', repeatCount, timestamp };
 }
+
+// Emit the first streak event immediately, then update one print as its count grows.
+export function createGiftTracker() {
+  const active = new Map();
+  const grouped = new Map();
+  const seen = new Map();
+  let sequence = 0;
+  return (evt, now = Date.now()) => {
+    for (const map of [active, grouped, seen]) for (const [key, item] of map) if (now - item.time > 120000) map.delete(key);
+    const gift = normalizeGift(evt, now);
+    const msgId = evt.event?.msgId || evt.msgId;
+    const pending = isPendingStreak(evt);
+    const type = Number(evt.giftDetails?.giftType ?? evt.giftType ?? evt.gift?.gift_type);
+    const messageKey = msgId ? `${msgId}:${gift.repeatCount}:${pending}` : null;
+    if (messageKey && seen.has(messageKey)) return null;
+    if (messageKey) seen.set(messageKey, { time: now });
+    if (type !== 1) return { ...gift, printId: `print-${now}-${++sequence}`, final: true };
+    const base = `${gift.id}:${evt.giftId || gift.giftName}`;
+    const group = evt.groupId && String(evt.groupId) !== '0' ? `${base}:${evt.groupId}` : null;
+    let entry = group ? grouped.get(group) : active.get(base);
+    if (!entry) {
+      entry = { printId: `print-${now}-${++sequence}`, count: 0, time: now, ended: false };
+      if (group) grouped.set(group, entry);
+      active.set(base, entry);
+    }
+    if (gift.repeatCount < entry.count || (entry.ended && gift.repeatCount === entry.count)) return null;
+    const first = entry.count === 0;
+    const changed = gift.repeatCount !== entry.count;
+    entry.count = gift.repeatCount; entry.time = now; entry.ended = !pending;
+    if (!pending && active.get(base) === entry) active.delete(base);
+    if (!first && !changed) return null;
+    return { ...gift, type: first ? 'gift' : 'gift-update', printId: entry.printId, final: !pending };
+  };
+}

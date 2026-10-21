@@ -1,0 +1,188 @@
+/* ATELIER — distinct visual identities; geometry and live timing stay in app.js. */
+:root{--ink:#171b21;--champagne:#e9c988;--aqua:#66f4e8;--violet:#bf85ff}
+html,body{background:#090d12}.machine-top{border-color:#667278;background:linear-gradient(180deg,#737c7f 0,#343e44 3%,#111a21 16%,#19252d 75%,#556268 95%,#a6adaa 98%,#1a252b 100%);box-shadow:inset 1px 1px #e6ecec44,0 8px 16px #0008}
+.machine-top::before{content:'';position:absolute;left:7%;right:7%;top:0;height:2px;background:linear-gradient(90deg,transparent,#d5c091bb,transparent);pointer-events:none}
+.machine-name{font-weight:700;letter-spacing:.02em;color:#f1eee5}.print-bed{background:repeating-linear-gradient(0deg,#35231b 0,#3c2920 2px,#493126 4px,#3c2820 9px);box-shadow:inset 0 7px 16px #000b}.paper{background:linear-gradient(112deg,#e5d7b6,#fff7df 30%,#f0e5cb 74%,#dfd0ae);border-radius:2px 2px 8% 2% / 2px 2px 2% 1%}.paper::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,#6b573002 0,#6b573002 1px,transparent 1px,transparent 4px);pointer-events:none}.idle-mark{color:#8e754712;font-family:Georgia,serif;font-weight:400;letter-spacing:0}.idle-mark span{font-family:Arial,sans-serif;color:#8c7c5866;font-size:clamp(8px,1.3vw,16px);letter-spacing:.18em}
+.machine-bottom{border-color:#58666c;background:linear-gradient(180deg,#536069,#222e35 12%,#111b22 75%,#2e3c43);box-shadow:inset 0 1px #d8e2e344,0 5px 12px #0005}.machine-bottom .label{color:#ccd1cd;font-weight:700;letter-spacing:.12em}.rail{background:linear-gradient(90deg,#122129,#67797f 25%,#e4ece9 45%,#71848a 62%,#1d3038);box-shadow:2px 0 6px #0007}.print-head{border-color:#b4beba;border-radius:8px;background:linear-gradient(145deg,#9caaa9,#53676b 10%,#20353d 45%,#0c2029 85%,#40606b);box-shadow:0 4px 12px #0008,inset 0 1px #eefff266}.crossbar{height:10px;border-color:#102028;background:linear-gradient(#dce7e4,#5b737a 30%,#e5eeeb 48%,#405a63 80%)}
+.print-card{isolation:isolate}.design-corners{position:absolute;inset:3%;z-index:3;pointer-events:none;border:1px solid #b99a5833;clip-path:polygon(0 0,16% 0,16% 1%,1% 1%,1% 16%,0 16%,0 0,100% 0,100% 16%,99% 16%,99% 1%,84% 1%,84% 0,100% 0,100% 100%,84% 100%,84% 99%,99% 99%,99% 84%,100% 84%,100% 100%,0 100%,0 84%,1% 84%,1% 99%,16% 99%,16% 100%,0 100%)}
+.edition-badge{position:absolute;top:3%;left:5%;font-size:min(4cqw,3.6cqh);font-weight:800;letter-spacing:.18em;color:#8b7758;line-height:1.2;z-index:2}
+/* 01 — warm archival print: quiet, clear, and intentionally static. */
+[data-tier=small] .print-card{background:linear-gradient(150deg,#fffef7,#f7eddb);border:1px solid #fff6;box-shadow:0 3px 8px #6e4d2520;border-radius:3px;gap:3%;padding-top:9%;padding-bottom:5%;animation:none}
+[data-tier=small] .card-portrait{border-radius:8px;border:4px solid #fff;box-shadow:0 1px 6px #493d2b33;outline:1px solid #e3d5bb;width:min(88cqw,59cqh);background:#273841}
+[data-tier=small] .card-avatar,[data-tier=small] .card-initial{border-radius:4px}.card-initial{font-family:Georgia,serif}
+[data-tier=small] .card-initial{background:linear-gradient(145deg,#637176,#243b45);color:#f1e4c8}
+[data-tier=small] .card-name{font-family:Arial,'Segoe UI',sans-serif;letter-spacing:-.035em;color:#19262d;font-size:min(18cqw,14cqh)}
+[data-tier=small] .card-gift{color:#8c6740;font-size:min(11cqw,9cqh);font-weight:600;letter-spacing:.02em}
+/* 02 — copper duo: a soft photo drift and a restrained foil finish. */
+[data-tier=pair] .print-card{border:1px solid #d5b69a;border-radius:16px;background:linear-gradient(155deg,#fff7ed,#f0d6c2 72%,#f9e9d8);box-shadow:0 5px 16px #643b2222;justify-content:center;gap:3%;height:76%}
+[data-tier=pair] .edition-badge{color:#9d6f4c;font-size:4.5cqw;top:4%}
+[data-tier=pair] .card-portrait{width:83%;border:4px solid #fdf1df;outline:1px solid #b08b64;border-radius:44% 44% 10px 10px;box-shadow:0 8px 12px #5f3d282b}
+[data-tier=pair] .card-avatar,[data-tier=pair] .card-initial{border-radius:43% 43% 7px 7px}
+[data-tier=pair] .card-initial{background:linear-gradient(145deg,#b79779,#674e47);color:#fff2d8}
+[data-tier=pair] .card-name{font-family:Georgia,'Segoe UI',serif;font-size:14cqw;color:#563b30;font-weight:700;letter-spacing:-.03em;margin-top:7%}
+[data-tier=pair] .card-handle{color:#9b7660;font-size:6cqw}[data-tier=pair] .card-gift{color:#79503b;font-size:8cqw}[data-tier=pair] .card-coins{color:#a27c57;font-size:5cqw}
+/* 100 — cyan/violet holographic medallions, one per half-sheet. */
+[data-tier=half] .print-card{border:1px solid #64e4e6;border-radius:17px;background:radial-gradient(ellipse at 50% 22%,#233a5e,#10182e 65%,#090d1c);box-shadow:inset 0 0 28px #5cd9ff17,0 0 14px #32b1c333}
+[data-tier=half] .print-card:nth-child(2){border-color:#c47cf5;background:radial-gradient(ellipse at 50% 22%,#45325f,#20132f 65%,#110e20);box-shadow:inset 0 0 28px #bd70ff17,0 0 14px #a45fc333}
+[data-tier=half] .design-corners{border-color:#b7e9ff88;inset:3%}
+[data-tier=half] .card-portrait{top:18%;width:min(52cqh,49cqw);border:3px solid #c9fffb;outline:1px solid #70d5ef;outline-offset:6px;box-shadow:0 0 12px #4edbdc99}
+[data-tier=half] .premium-orbit{top:16%;width:min(57cqh,54cqw);border:1px dashed #a4e6f599}
+[data-tier=half] .card-portrait::after{content:'';position:absolute;inset:-14px;border:2px solid transparent;border-top-color:#a9f9ed;border-bottom-color:#bc85ff;border-radius:50%;animation:medallion-spin 6s linear infinite;pointer-events:none}
+[data-tier=half] .gift-effect{top:4%;font-size:min(3.4cqw,5.2cqh);letter-spacing:.24em;display:flex;align-items:center;justify-content:center;gap:9px}
+.design-mark{width:1.7em;height:1.7em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+[data-tier=half] .card-name{font-size:min(9.5cqw,13.5cqh);bottom:22%;letter-spacing:-.02em;background:linear-gradient(100deg,#fff,#91fff3 35%,#ce8bff 60%,#fff);background-size:230% 100%;background-clip:text;-webkit-background-clip:text}
+[data-tier=half] .card-gift{bottom:8%;font-size:min(4.6cqw,7cqh);letter-spacing:.04em}
+[data-tier=half] .premium-flash{opacity:.6}[data-tier=half] .premium-particles span{color:#c0f8fd;opacity:.5}
+/* 500 — obsidian and gold: heraldic crown, light sweep, slow cinematic image. */
+[data-tier=full] .print-card{border:2px solid #d7b36e;border-radius:10px;background:#0e1119;box-shadow:inset 0 0 30px #ba96512a,0 0 15px #deb46166}
+[data-tier=full] .design-corners{inset:3%;border:2px solid #f1d59a;z-index:5}
+[data-tier=full] .card-initial{background:radial-gradient(ellipse at 50% 24%,#4b4437,#1b1d28 50%,#0a0e18);color:#d9bd83;font-family:Georgia,serif;font-weight:400}
+[data-tier=full] .gift-effect{top:4%;display:flex;flex-direction:column;gap:8px;align-items:center;font-size:3.3cqw;letter-spacing:.38em;color:#f2d8a5;animation:royal-seal 4s ease-in-out infinite}
+[data-tier=full] .gift-effect .design-mark{width:2.8em;height:2.8em;stroke-width:1.4;filter:drop-shadow(0 0 6px #eacb8766)}
+[data-tier=full] .premium-orbit{background:repeating-conic-gradient(transparent 0deg 21deg,#e8c47517 22deg 25deg,transparent 26deg 45deg);animation-duration:40s}
+[data-tier=full] .print-card::before{inset:30% 0 0;background:linear-gradient(transparent,#080d1b99 40%,#080d1bf5 85%);z-index:1}
+[data-tier=full] .card-name{bottom:23%;font-family:Georgia,'Segoe UI',serif;font-size:12cqw;font-weight:700;letter-spacing:-.045em;line-height:1.3;filter:drop-shadow(0 2px 2px #000);background:linear-gradient(105deg,#b58d45,#f7dfae 25%,#fff3cf 40%,#d5b06c 60%,#fce7b4 80%);background-size:240% 100%;background-clip:text;-webkit-background-clip:text}
+[data-tier=full] .card-handle{font-size:4.1cqw;bottom:18%;letter-spacing:.08em;color:#c7b38a}
+[data-tier=full] .card-gift{font-size:5.5cqw;bottom:10%;color:#f2ddaf;letter-spacing:.03em}
+[data-tier=full] .card-coins{font-size:3.5cqw;bottom:5%;color:#c7a86c;letter-spacing:.24em}
+[data-tier=full] .premium-particles span{font-size:clamp(10px,2vw,24px);color:#f3dca4}
+/* The tier guide is designed as four material swatches. */
+.gift-guide>div{border-radius:12px;border:1px solid #746248;background:linear-gradient(145deg,#25313a,#131e26);box-shadow:inset 0 1px #d8e4e222,0 3px 7px #0003}
+.gift-guide>div:nth-child(1){border-color:#d7c5a8;background:linear-gradient(140deg,#faf3e1,#dccdb3);color:#3c3930}.gift-guide>div:nth-child(1) small{color:#705b3d}
+.gift-guide>div:nth-child(2){border-color:#ad8161;background:linear-gradient(140deg,#f0d7c0,#a57e67);color:#4d332a}.gift-guide>div:nth-child(2) small{color:#5c3d30}
+.gift-guide>div:nth-child(3){border-color:#7adddf;background:linear-gradient(135deg,#133741,#302044);color:#bcfbf4}.gift-guide>div:nth-child(3) small{color:#d2c5fa}
+.gift-guide>div:nth-child(4){border-color:#c7a25b;background:linear-gradient(140deg,#393328,#141925);color:#f3dba9}.gift-guide>div:nth-child(4) small{color:#d3b780}
+.gift-guide strong{font-weight:900;letter-spacing:-.02em}.gift-guide small{font-weight:700;letter-spacing:.04em}
+.waiting-slot{border:1px dashed #7c799b;border-radius:17px;background:radial-gradient(ellipse,#27273f,#111827);color:#c8c4da}.waiting-symbol{color:#96c4ce}
+@keyframes medallion-spin{to{transform:rotate(360deg)}}@keyframes royal-seal{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(-5px);opacity:1}}
+@media(prefers-reduced-motion:reduce){.card-portrait,.card-avatar,.card-initial,.card-name,.gift-effect,.premium-orbit,.premium-flash,.premium-particles span,.card-portrait::after{animation:none!important}}
+.machine[data-tier=pair] .machine-top::before{background:linear-gradient(90deg,transparent,#e0ad88,transparent)}
+.machine[data-tier=half] .machine-top::before{background:linear-gradient(90deg,transparent,#69e9ed,#b485f2,transparent)}
+.machine[data-tier=full] .machine-top::before{background:linear-gradient(90deg,transparent,#ffdfa0,transparent)}
+.machine[data-tier=small]+.gift-guide>div:nth-child(1),.machine[data-tier=pair]+.gift-guide>div:nth-child(2),.machine[data-tier=half]+.gift-guide>div:nth-child(3),.machine[data-tier=full]+.gift-guide>div:nth-child(4){outline:2px solid #f2deae;outline-offset:2px}
+
+.card-initial{overflow:hidden;line-height:1}.card-avatar{display:block}
+
+/* WORKSHOP PLOTTER: mechanical materials and a toned paper surface. */
+html,body{background:#101a20}
+#scene{background:radial-gradient(ellipse at 48% 30%,#34433f 0%,#1a2a2b 42%,#101a20 78%)}
+.machine{isolation:isolate;filter:drop-shadow(0 12px 14px #0008)}
+.machine::before,.machine::after{content:'';position:absolute;top:4%;bottom:1%;width:3%;z-index:-1;border:1px solid #637377;background:linear-gradient(90deg,#1c2b31,#70828a 45%,#344950 70%,#17272e);border-radius:4px;box-shadow:0 4px 8px #0007;pointer-events:none}
+.machine::before{left:-1.2%;transform:skewY(-5deg)}.machine::after{right:-1.2%;transform:skewY(5deg)}
+.machine-top{border:2px solid #77858a;border-bottom:4px solid #0b171e;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,#a5b1b2 0,#8e9b9e 3%,#52636a 5%,#24363e 17%,#162a33 55%,#0d202a 78%,#4a616b 92%,#8e9c9f 96%,#172931 100%);box-shadow:0 10px 10px #0008,inset 0 1px #f5f7e888;padding-left:7%;padding-right:7%}
+.studio .machine-top{height:7%;padding-left:6%;padding-right:6%;border-radius:6px 6px 2px 2px}
+.machine-top::after{content:'';position:absolute;right:4%;top:65%;width:19%;height:13%;background:repeating-linear-gradient(90deg,#08151b 0,#08151b 3px,#40545a 4px,#40545a 6px);border-radius:2px;opacity:.65}
+.chassis-bolt{position:absolute;top:45%;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#101e24 0 20%,#c1cbca 25% 38%,#54676e 45% 68%,#1b2b32 75%);box-shadow:0 1px 2px #0008}.bolt-left{left:2%}.bolt-right{right:2%}
+.machine-name{color:#e4eae5;text-shadow:0 1px 1px #000;font-weight:600}.connection-indicator{position:relative;z-index:2}
+.print-bed{background:linear-gradient(100deg,#15262c,#334149 6%,#344038 20%,#25332f 70%,#16272c 95%);border-color:#172b35;border-left-width:12px;border-right-width:12px;box-shadow:inset 0 15px 16px #0008,inset 8px 0 10px #0006,inset -8px 0 10px #0006;overflow:visible}
+.studio .print-bed{height:88%;border-left-width:10px;border-right-width:10px}
+.bed-grid{position:absolute;inset:0 4%;background:linear-gradient(90deg,#b2c5a311 1px,transparent 1px),linear-gradient(#b2c5a30d 1px,transparent 1px);background-size:24px 24px;clip-path:polygon(3% 0,97% 0,100% 100%,0 100%);pointer-events:none}
+.paper{background:linear-gradient(105deg,#b3ad95 0,#c5bea7 9%,#d0c9b3 48%,#c3bca4 92%,#a9a38c 100%);border-radius:1px 1px 6% 2% / 1px 1px 2% 1%;border:1px solid #b0a98c;box-shadow:0 7px 8px #0005}
+.paper::before{background:repeating-linear-gradient(0deg,#665c3e06 0,#665c3e06 1px,transparent 1px,transparent 5px)}
+.paper::after{height:4%;background:linear-gradient(0deg,#7c7d68,#c0b99f 40%,#c8c1aa 70%,transparent)}
+.studio .paper{left:7%;right:7%;top:2%;bottom:1%;box-shadow:3px 5px 7px #0006}
+.paper-roll{left:6%;right:6%;top:-.2%;height:5%;z-index:1;border:1px solid #858b80;background:linear-gradient(180deg,#8d948b,#bec3ad 28%,#e0dcc4 49%,#aaa890 75%,#6e776e);border-radius:16px;box-shadow:0 4px 5px #0006}
+.paper-roll::before,.paper-roll::after{content:'';position:absolute;top:0;bottom:0;width:14px;border-radius:50%;background:radial-gradient(ellipse,#3b4a4a 0 22%,#a9b2a6 25% 56%,#5b6b6a 60% 76%,#1c3039 80%)}.paper-roll::before{left:-5px}.paper-roll::after{right:-5px}
+.paper-guide{border-color:#6c6d56}.idle-mark{color:#50614e12}.idle-mark span{color:#58645199;letter-spacing:.16em}
+.rail{width:11px;background:linear-gradient(90deg,#152e39,#5b7884 18%,#d0dad7 36%,#f2f4e7 44%,#788e96 58%,#2f4855 82%,#0c2531);border:1px solid #0e2934;box-shadow:3px 0 4px #0008}
+.studio .rail{width:11px}.rail-left{left:2.3%;transform:rotate(.6deg);transform-origin:top}.rail-right{right:2.3%;transform:rotate(-.6deg);transform-origin:top}
+.cable-track{position:absolute;right:3.8%;top:1%;bottom:4%;width:10px;border:1px solid #0b202b;border-radius:3px;background:repeating-linear-gradient(0deg,#0b1821 0,#0b1821 6px,#52616a 7px,#1a2b34 9px);box-shadow:-2px 0 4px #0006}
+.gantry{left:.5%;right:.5%;height:7%;z-index:7}.studio .gantry{height:7%}
+.crossbar{height:15px;top:38%;background:linear-gradient(180deg,#b8c8ca,#f1f3e7 13%,#516b76 25%,#aabcc1 42%,#c4d2d1 52%,#3e5b6b 74%,#172f3c 92%);border:1px solid #132c38;box-shadow:0 5px 5px #0006}
+.crossbar::before,.crossbar::after{content:'';position:absolute;top:-7px;width:26px;height:29px;border:1px solid #95a7a9;border-radius:4px;background:linear-gradient(90deg,#243f4b,#9cb0b3 45%,#304f5e);box-shadow:1px 4px 4px #0007}.crossbar::before{left:0}.crossbar::after{right:0}
+.print-head{top:-6%;height:114%;width:15%;border:2px solid #9aafb2;border-bottom:5px solid #132a36;border-radius:6px;background:linear-gradient(145deg,#abbab8 0,#697f84 8%,#2f4b5b 35%,#152f42 75%,#5f7c89 97%);box-shadow:2px 5px 7px #0009,inset 0 1px #f2faef99;display:flex;flex-direction:column;justify-content:center;gap:8%;overflow:visible}
+.head-model{font:700 clamp(6px,min(1.3vw,1.25vh),14px) Arial;letter-spacing:.13em;color:#d8e4dd;text-shadow:0 1px #000}
+.head-light{top:11%;left:9%;width:5px;height:5px}
+.ink-cartridges{display:flex;gap:4px;justify-content:center;width:65%;height:15%;min-height:4px}.ink-cartridges i{display:block;flex:1;border:1px solid #0005;border-radius:1px;background:#32c8d7;box-shadow:inset 0 1px #fff6}.ink-cartridges i:nth-child(2){background:#ce5384}.ink-cartridges i:nth-child(3){background:#e8ca59}.ink-cartridges i:nth-child(4){background:#18242e}
+.nozzle{height:10px;width:24%;top:100%;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#5c5e4c,#d0c1a3 35%,#786e56 68%,#413f36);border:1px solid #4a4c41}
+.paper-clamp{position:absolute;top:1.2%;width:5%;height:3.2%;z-index:6;border:1px solid #7a8989;border-radius:3px;background:linear-gradient(90deg,#23404c,#b0bfba 35%,#5d757b 65%,#1b3847);box-shadow:1px 3px 3px #0006}.clamp-left{left:8%}.clamp-right{right:8%}
+.feed-roller{position:absolute;bottom:-.5%;left:5%;right:5%;height:2.6%;z-index:5;border:1px solid #0c2532;border-radius:15px;background:linear-gradient(180deg,#132f3d,#6d8589 22%,#c3cbc0 42%,#47656e 68%,#092431);box-shadow:0 4px 6px #0008;overflow:hidden}
+.feed-roller::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 10%,#172d36aa 10%,#172d36aa 12%);opacity:.6}
+.is-printing .feed-roller::after{animation:roller-feed .4s linear 3}
+.machine-bottom{height:5%;border:2px solid #73858d;border-top:3px solid #132c3c;background:linear-gradient(180deg,#6e8288,#314f5e 17%,#183746 65%,#0e2632 85%,#3b5561);border-radius:2px 2px 7px 7px;box-shadow:inset 0 1px #cad8d588,0 8px 10px #0007}.studio .machine-bottom{height:5%}
+.machine-bottom .label{color:#cbd9d7;font-size:clamp(7px,1.1vh,15px);letter-spacing:.14em}.vents{color:#081b27}.power{color:#acdbcc;text-shadow:0 0 5px #a4edcf33}
+[data-tier=small] .print-card{background:linear-gradient(145deg,#ded5bf,#c5baa2);border-color:#e8dfc7;box-shadow:0 3px 6px #3c3b2b2b}
+[data-tier=small] .card-portrait{border-color:#d5d0bc;outline-color:#aaa58e}
+[data-tier=small] .edition-badge{color:#6d6248}
+[data-tier=small] .card-name{color:#1f302f}[data-tier=small] .card-gift{color:#655339}
+[data-tier=pair] .print-card{background:linear-gradient(145deg,#cbb39b,#b79580 75%,#c0a38a);border-color:#d8c0a6}
+[data-tier=pair] .card-portrait{border-color:#d9c3a7;outline-color:#94735c}
+[data-tier=pair] .card-name{color:#423329}[data-tier=pair] .card-handle{color:#775944}[data-tier=pair] .card-gift{color:#513c2c}[data-tier=pair] .card-coins{color:#705439}
+.gift-guide>div:nth-child(1){background:linear-gradient(140deg,#c8bfa7,#a69d87);border-color:#bfb499}.gift-guide>div:nth-child(2){background:linear-gradient(140deg,#c5a98e,#9d7865);border-color:#b8977d}
+@keyframes roller-feed{to{transform:translateX(12%)}}
+
+/* PORTRAIT XL — allocate most of every card to the actual profile image. */
+[data-tier=small] .card-portrait{position:absolute;left:5%;top:10%;width:90%;height:60%;aspect-ratio:auto;transform:none}
+[data-tier=small] .card-name{position:absolute;left:4%;right:4%;bottom:14%;margin:0;text-align:center;font-size:min(18cqw,12cqh);line-height:1.2}
+[data-tier=small] .card-gift{position:absolute;left:4%;right:4%;bottom:4%;text-align:center;font-size:min(11cqw,8cqh);line-height:1.2}
+[data-tier=pair] .card-portrait{position:absolute;left:4%;top:9%;width:92%;height:62%;aspect-ratio:auto}
+[data-tier=pair] .card-name{position:absolute;left:4%;right:4%;bottom:18%;text-align:center;margin:0;font-size:13cqw;line-height:1.2}
+[data-tier=pair] .card-handle{position:absolute;left:4%;right:4%;bottom:12%;text-align:center;font-size:5.5cqw}
+[data-tier=pair] .card-gift{position:absolute;left:4%;right:4%;bottom:6%;text-align:center;font-size:7.5cqw}
+[data-tier=pair] .card-coins{position:absolute;bottom:2%;font-size:4.5cqw}
+[data-tier=half] .card-portrait{top:11%;width:min(70cqh,67cqw)}
+[data-tier=half] .premium-orbit{top:9%;width:min(75cqh,72cqw)}
+[data-tier=half] .gift-effect{top:2%;font-size:min(3.4cqw,4cqh)}
+[data-tier=half] .card-name{bottom:14%;font-size:min(10cqw,12cqh);line-height:1.2}
+[data-tier=half] .card-handle{bottom:10%;font-size:min(4cqw,5cqh);line-height:1.2}
+[data-tier=half] .card-gift{bottom:5%;font-size:min(4.6cqw,6cqh);line-height:1.2}
+[data-tier=half] .card-coins{bottom:1%;font-size:min(3.5cqw,4cqh);line-height:1.2}
+.card-avatar{object-position:center 35%}
+.portrait-sheen{position:absolute;inset:3px;border-radius:inherit;overflow:hidden;z-index:1;pointer-events:none}
+.portrait-sheen::before{content:'';position:absolute;inset:-30%;background:linear-gradient(115deg,transparent 40%,#ffffff30 49%,transparent 58%);transform:translateX(-130%);animation:portrait-light-pass 4s ease-in-out infinite}
+[data-tier=half] .card-portrait{box-shadow:0 0 12px #6bf6ec77,0 0 28px #9479e244}
+[data-tier=full] .portrait-sheen::before{background:linear-gradient(115deg,transparent 40%,#f7de9e24 49%,transparent 58%);animation-duration:5.5s}
+[data-tier=full] .card-portrait{box-shadow:inset 0 0 40px #d3b06c33}
+@keyframes portrait-light-pass{0%,35%{transform:translateX(-130%)}80%,100%{transform:translateX(130%)}}
+@media(prefers-reduced-motion:reduce){.portrait-sheen::before{animation:none}}
+
+/* Stronger profiles, with a deliberate increase in effects at higher coin values. */
+[data-tier=small][data-count="1"] .print-card{width:76%;height:72%}
+[data-tier=small][data-count="2"] .print-card{height:72%}
+[data-tier=small] .card-portrait{height:65%}
+[data-tier=small] .card-name{bottom:10%}
+[data-tier=small] .card-gift{bottom:1.5%}
+[data-tier=pair] .card-portrait{left:2%;top:8%;width:96%;height:66%}
+[data-tier=pair] .card-name{bottom:14%}
+[data-tier=pair] .card-handle{bottom:9%}
+[data-tier=pair] .card-gift{bottom:4.5%}
+[data-tier=pair] .card-coins{bottom:.5%}
+@container (min-aspect-ratio:1.5){
+ [data-tier=half] .card-portrait{left:24%;top:8%;width:min(84cqh,45cqw)}
+ [data-tier=half] .premium-orbit{left:24%;top:5%;width:min(90cqh,49cqw)}
+ [data-tier=half] .gift-effect{left:48%;right:4%;width:auto;top:9%;font-size:min(4cqw,7cqh);letter-spacing:.12em}
+ [data-tier=half] .card-name{left:48%;right:4%;bottom:43%;font-size:min(9cqw,16cqh);text-align:center}
+ [data-tier=half] .card-handle{left:48%;right:4%;bottom:32%;font-size:min(4cqw,7cqh)}
+ [data-tier=half] .card-gift{left:48%;right:4%;bottom:18%;font-size:min(5cqw,9cqh)}
+ [data-tier=half] .card-coins{left:48%;right:4%;bottom:7%;text-align:center;font-size:min(4cqw,7cqh)}
+}
+[data-tier=half] .portrait-sheen::before{animation-duration:3s;background:linear-gradient(115deg,transparent 38%,#b4fff451 49%,transparent 60%)}
+[data-tier=half] .card-portrait::after{animation-duration:3.5s;border-width:3px}
+[data-tier=full][data-prestige=gold] .portrait-sheen::before{animation-duration:3.8s}
+.prestige-aura{position:absolute;inset:2%;pointer-events:none;z-index:3;border:2px solid #bde8ff66;border-radius:7px;box-shadow:inset 0 0 25px #8ce2ff33;animation:prestige-frame 2.6s ease-in-out infinite alternate}
+[data-prestige=diamond].print-card{border-color:#b6eaff;box-shadow:0 0 20px #77c8ee66,inset 0 0 20px #96c2ff33}
+[data-prestige=diamond] .gift-effect{color:#d5f3ff;text-shadow:0 0 14px #8fb5e9}
+[data-prestige=diamond] .design-corners{border-color:#b3e6ff}
+[data-prestige=diamond] .card-name{background-image:linear-gradient(105deg,#7da6d3,#f3fcff 25%,#9ae9ff 45%,#cdb7ff 70%,#f3fcff);filter:drop-shadow(0 1px 3px #020b22)}
+[data-prestige=diamond] .premium-orbit{background:repeating-conic-gradient(transparent 0deg 21deg,#bce9ff20 22deg 25deg,transparent 26deg 45deg);animation-duration:24s}
+[data-prestige=diamond] .premium-particles span{color:#c5edff}
+[data-prestige=diamond] .portrait-sheen::before{background:linear-gradient(115deg,transparent 38%,#c2ecff40 49%,transparent 60%);animation-duration:3.3s}
+[data-prestige=galactic].print-card{border-color:#d5a9ff;box-shadow:0 0 25px #a170eb66,inset 0 0 24px #bd8aff44}
+[data-prestige=galactic] .prestige-aura{border-color:#e0b5ff99;box-shadow:inset 0 0 40px #a566df55;animation-duration:1.8s}
+[data-prestige=galactic] .gift-effect{color:#f0dcff;text-shadow:0 0 12px #af6de5;letter-spacing:.2em}
+[data-prestige=galactic] .design-corners{border-color:#e6c8ff}
+[data-prestige=galactic] .card-name{background-image:linear-gradient(105deg,#8bd5ff,#fff0cb 20%,#e1aaff 40%,#a7f9f5 65%,#ffe5bd 85%);animation-duration:2s}
+[data-prestige=galactic] .premium-orbit{background:repeating-conic-gradient(transparent 0deg 12deg,#b48cfe25 13deg 16deg,transparent 17deg 30deg);animation-duration:18s}
+[data-prestige=galactic] .premium-particles span{color:#ebcdff;animation-duration:3.2s}
+[data-prestige=galactic] .premium-particles span:nth-child(3n){color:#b6f4f4}
+[data-prestige=galactic] .premium-particles span:nth-child(4n){color:#ffe0ac}
+[data-prestige=galactic] .portrait-sheen::before{background:linear-gradient(115deg,transparent 38%,#debaff4d 49%,transparent 60%);animation-duration:2.6s}
+.premium-particles span{left:calc(4% + var(--lane,var(--i))*8%)}
+@keyframes prestige-frame{from{opacity:.55;transform:scale(.99)}to{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.prestige-aura{animation:none}}
+
+#demo-button{max-width:94%;flex-wrap:wrap;justify-content:center}
+/* Cap stacked medals by the allocated half-sheet height to keep names clear. */
+[data-tier=half] .card-portrait{top:9%;height:60%;width:auto;aspect-ratio:1}
+[data-tier=half] .premium-orbit{top:7%;height:64%;width:auto;aspect-ratio:1}
+@container (min-aspect-ratio:1.5){[data-tier=half] .card-portrait{top:8%;height:auto;width:min(84cqh,45cqw)}[data-tier=half] .premium-orbit{top:5%;height:auto;width:min(90cqh,49cqw)}}
