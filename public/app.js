@@ -5,7 +5,6 @@ const grid = $('print-grid');
 const capacities = { small: 6, pair: 2, half: 2, full: 1 };
 const pages = [];
 let current = null;
-let startTimer;
 let pageTimer;
 let socket;
 function safeAvatar(url) { try { const u = new URL(url); return u.protocol === 'https:' ? u.href : ''; } catch { return ''; } }
@@ -24,7 +23,7 @@ function card(item) {
   const initial = element('div', 'card-initial', Array.from(item.nickname || item.id || '♥')[0].toUpperCase());
   portrait.append(initial);
   const src = safeAvatar(item.avatar);
-  if (src) { const img = element('img', 'card-avatar'); img.alt = item.nickname || item.id; img.src = src; img.onerror = () => img.remove(); portrait.append(img); }
+  if (src) { const img = element('img', 'card-avatar'); img.alt = item.nickname || item.id; img.decoding = 'async'; img.fetchPriority = 'high'; img.src = src; img.onerror = () => img.remove(); portrait.append(img); }
   const name = element('div', 'card-name', item.nickname || item.id); name.dir = 'auto';
   const coins = item.totalCoins === null || item.totalCoins === undefined ? 'Gift received' : `${item.totalCoins.toLocaleString()} COINS`;
   el.append(effect, portrait, name, element('div', 'card-handle', '@' + (item.id || 'viewer')), element('div', 'card-gift', `${item.giftName || 'Gift'} ×${item.repeatCount || 1}`), element('div', 'card-coins', coins));
@@ -32,7 +31,6 @@ function card(item) {
 }
 function queueStatus() { $('queue').textContent = `Queue: ${pages.reduce((n,p) => n + p.items.length, 0)}`; }
 function next() {
-  startTimer = null;
   if (!pages.length) { current = null; queueStatus(); return; }
   current = pages.shift();
   grid.replaceChildren(); grid.dataset.tier = current.tier;
@@ -47,10 +45,11 @@ function next() {
   void paper.offsetWidth;
   paper.classList.add('printing'); machine.classList.add('is-printing');
   queueStatus();
-  finishPage(current.tier === 'full' || current.tier === 'half' ? 14000 : 12000);
+  finishPage(({ small: 2000, pair: 2500, half: 3500, full: 4500 })[current.tier]);
 }
 function finishPage(delay) {
   clearTimeout(pageTimer);
+  current.deadline = Date.now() + delay;
   pageTimer = setTimeout(() => { machine.classList.remove('is-printing'); paper.classList.remove('printing'); paper.classList.add('printed'); current = null; next(); }, delay);
 }
 function enqueue(item) {
@@ -59,14 +58,20 @@ function enqueue(item) {
     current.items.push(item);
     const waiting = grid.querySelector('.waiting-slot');
     if (waiting) waiting.replaceWith(card(item)); else grid.append(card(item));
-    finishPage(Math.max(1000, Math.min(8000, current.started + 24000 - Date.now())));
+    const deadline = Math.min(current.started + 6000, Math.max(current.deadline, Date.now() + 1000));
+    finishPage(Math.max(0, deadline - Date.now()));
     return;
   }
   const last = pages.at(-1);
   if (last && last.tier === item.tier && last.items.length < capacities[item.tier]) last.items.push(item);
   else { if (pages.length >= 50) pages.shift(); pages.push({ tier: item.tier, items: [item] }); }
   queueStatus();
-  if (!current && !startTimer) startTimer = setTimeout(next, 700);
+  if (!current) next();
+  else {
+    // Under load, finish the current sheet promptly while preserving a minimum viewing time.
+    const remaining = Math.max(0, current.deadline - Date.now());
+    finishPage(Math.min(remaining, Math.max(500, current.started + 1000 - Date.now())));
+  }
 }
 function demo(tier = 'small', batch = false) { if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'demo', tier, batch })); }
 function connect() {

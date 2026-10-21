@@ -87,3 +87,9 @@ html.transparent,html.transparent body{background:transparent}
 [data-tier=small] .card-handle,[data-tier=small] .card-coins{display:none}
 .paper{transform:none}.gantry{top:-3%}.label{white-space:nowrap;font-size:min(1.3vw,1.55vh);letter-spacing:.08em}.vents{font-size:min(2vw,2vh)}
 @keyframes scan-bed{0%{top:-3%}90%{top:88%}100%{top:-3%}}
+
+/* Immediate visibility; the printer motion is decorative, not a display delay. */
+.printing .print-grid{animation:quick-ink .35s ease-out forwards}
+.is-printing .gantry{animation-duration:.7s}.is-printing .print-head{animation-duration:.16s;animation-iteration-count:4}
+[data-tier=full] .print-card{animation-duration:.35s}
+@keyframes quick-ink{from{opacity:.65;clip-path:inset(0);transform:translateY(-3px)}to{opacity:1;clip-path:inset(0);transform:translateY(0)}}
