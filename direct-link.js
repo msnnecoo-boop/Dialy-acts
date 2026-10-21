@@ -66,7 +66,7 @@ export async function main() {
         linkSaved = true;
         const link = `${url}/overlay?clean=1`;
         writeFile(path.join(ROOT, 'DIRECT-LINK.txt'), link + '\n').catch(e => console.error('Cannot save link:', e.message));
-        console.log(`\n========== TIKTOK LINK ==========\n${link}\n================================\nPaste into LIVE Studio > Add source > Link. Resolution: 1080 x 1920.\nKeep this window open. The URL changes after restarting the tunnel.\n`);
+        console.log(`\n========== TIKTOK LINK ==========\n${link}\n================================\nPaste into LIVE Studio > Add source > Link. Custom resolution: 1080 x 1200 with video below, or 1080 x 1920 for a full scene.\nSetup and copy link: ${url}/setup\nKeep this window open. The URL changes after restarting the tunnel.\n`);
       }
     };
     tunnel.stdout.on('data', onData); tunnel.stderr.on('data', onData);

@@ -15,7 +15,7 @@ const DEMO = process.env.DEMO_MODE === 'true';
 const server = http.createServer(async (req, res) => {
   const route = new URL(req.url, `http://${req.headers.host || 'localhost'}`).pathname;
   if (route === '/health') { res.writeHead(200, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ connected, status: lastStatus, username: USERNAME, demo: DEMO })); return; }
-  const files = { '/': 'index.html', '/overlay': 'index.html', '/app.js': 'app.js', '/style.css': 'style.css' };
+  const files = { '/': 'index.html', '/overlay': 'index.html', '/setup': 'setup.html', '/app.js': 'app.js', '/style.css': 'style.css' };
   const file = files[route];
   if (!file) { res.writeHead(404); res.end('Not found'); return; }
   try {

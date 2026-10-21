@@ -38,7 +38,7 @@ function next() {
   if (!pages.length) { current = null; queueStatus(); return; }
   current = pages.shift();
   displayedPage = current;
-  grid.replaceChildren(); grid.dataset.tier = current.tier;
+  grid.replaceChildren(); grid.dataset.tier = current.tier; grid.dataset.count = current.items.length;
   paper.classList.remove('printing', 'printed'); machine.classList.remove('is-printing');
   current.started = Date.now();
   for (const item of current.items) grid.append(card(item));
@@ -77,6 +77,7 @@ function updatePrint(item) {
       return true;
     }
     page.items.splice(index, 1);
+    if (page === displayedPage) grid.dataset.count = page.items.length;
     if (page === displayedPage) [...grid.querySelectorAll('.print-card')].find(el => el.dataset.printId === item.printId)?.remove();
     if (!page.items.length) {
       const queuedIndex = pages.indexOf(page); if (queuedIndex >= 0) pages.splice(queuedIndex, 1);
@@ -93,6 +94,7 @@ function enqueue(item) {
   if (item.printId) { seenPrints.set(item.printId, item.tier); if (seenPrints.size > 1000) seenPrints.delete(seenPrints.keys().next().value); }
   if (current && current.tier === item.tier && current.items.length < capacities[item.tier]) {
     current.items.push(item);
+    grid.dataset.count = current.items.length;
     runPrinter();
     const waiting = grid.querySelector('.waiting-slot');
     if (waiting) waiting.replaceWith(card(item)); else grid.append(card(item));
