@@ -76,8 +76,8 @@ function enqueue(item) {
 function demo(tier = 'small', batch = false) { if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ type: 'demo', tier, batch })); }
 function connect() {
   socket = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}`);
-  socket.onmessage = ev => { try { const m = JSON.parse(ev.data); if (m.type === 'gift') enqueue(m); if (m.type === 'status') { $('status').textContent = 'FAST XL • ' + m.status + (m.demo ? ' • D: test gifts' : ''); $('demo-button').hidden = !m.demo; } } catch (err) { console.error('Overlay message failed', err); } };
-  socket.onclose = () => { $('status').textContent = 'Reconnecting overlay...'; setTimeout(connect, 2500); };
+  socket.onmessage = ev => { try { const m = JSON.parse(ev.data); if (m.type === 'gift') enqueue(m); if (m.type === 'status') { $('status').textContent = 'FAST XL • ' + m.status + (m.demo ? ' • D: test gifts' : ''); $('demo-button').hidden = !m.demo; const mode = m.demo ? 'DEMO • آزمایشی' : m.connected ? 'LIVE • متصل' : 'OFFLINE • قطع'; $('connection-indicator').textContent = mode; $('connection-indicator').dataset.state = m.demo ? 'demo' : m.connected ? 'live' : 'offline'; document.querySelector('.live-badge').textContent = mode; } } catch (err) { console.error('Overlay message failed', err); } };
+  socket.onclose = () => { $('connection-indicator').textContent = 'OFFLINE • قطع'; $('connection-indicator').dataset.state = 'offline'; document.querySelector('.live-badge').textContent = 'OFFLINE'; $('demo-button').hidden = true; $('status').textContent = 'Reconnecting overlay...'; setTimeout(connect, 2500); };
 }
 connect();
 document.addEventListener('keydown', ev => { if (ev.key.toLowerCase() === 'd' && !ev.repeat) demo('small', true); });

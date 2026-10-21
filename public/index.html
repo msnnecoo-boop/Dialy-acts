@@ -3,7 +3,7 @@
 <body><main id="scene">
 <header class="brand"><span class="brand-mark">🎁</span><div class="brand-copy">send gift n print your profile<span class="brand-sub">LIVE PRINT STUDIO</span></div><span class="live-badge">● LIVE</span></header>
 <section class="machine" aria-label="Animated virtual gift plotter">
- <div class="machine-top"><span class="led"></span><span class="machine-name">send gift n print your profile</span><span class="top-detail">PRECISION PHOTO PLOTTER</span></div>
+ <div class="machine-top"><span class="led"></span><span class="machine-name">send gift n print your profile</span><span id="connection-indicator" class="connection-indicator" data-state="offline">CONNECTING</span></div>
  <div class="print-bed"><div class="bed-lines"></div><div class="paper-roll"></div>
   <div id="paper" class="paper"><div class="paper-guide top-left"></div><div class="paper-guide top-right"></div>
    <div class="idle-mark">♥<span>YOUR GIFT. YOUR PRINT.</span></div>
@@ -14,5 +14,11 @@
  </div>
  <div class="machine-bottom"><span class="vents">▰ ▰ ▰ ▰ ▰</span><span class="label">LARGE FORMAT <b>✦</b> GIFT EDITION</span><span class="power">⏻</span></div>
 </section>
+<nav class="gift-guide" aria-label="Gift coin values and print sizes">
+ <div><span>🌹</span><strong>1–9 🪙</strong><small>SMALL PRINT</small></div>
+ <div><span>🎁</span><strong>10–99 🪙</strong><small>TWO PROFILES</small></div>
+ <div><span>💎</span><strong>100–499 🪙</strong><small>SUPER STAR DUO</small></div>
+ <div><span>👑</span><strong>500+ 🪙</strong><small>FULL PAGE VIP</small></div>
+</nav>
 <div id="demo-button" hidden><button data-tier="small" data-batch="true">🌹 1 × 4</button><button data-tier="pair" data-batch="true">🎁 10 × 2</button><button data-tier="half" data-batch="true">💎 100 × 2</button><button data-tier="full">👑 500 VIP</button></div><div class="bottom"><div id="status" class="status">Starting...</div><div id="queue" class="queue">Queue: 0</div></div>
 </main><script src="/app.js"></script></body></html>

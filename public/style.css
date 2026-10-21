@@ -112,3 +112,14 @@ html.transparent,html.transparent body{background:transparent}
 .studio .label{font-size:clamp(7px,1.1vh,16px)}.studio .rail{width:8px}
 .studio .print-head{min-height:20px}.studio .gantry{height:5%}
 @media(max-aspect-ratio:1/1){.studio .machine{max-width:none}}
+
+/* Public gift information stays visible in live and clean capture modes. */
+.connection-indicator{margin-left:auto;flex-shrink:0;border:1px solid #cfb98255;border-radius:20px;padding:5px 8px;font-size:clamp(7px,min(1.4vw,1.4vh),15px);white-space:nowrap;color:#ffb899;background:#241e18}
+.connection-indicator[data-state=live]{color:#8dffcf;border-color:#43c59566;background:#102d25}
+.connection-indicator[data-state=demo]{color:#ffdb84;border-color:#e4b44b88;background:#382b13}
+.machine-name{min-width:0}.gift-guide{position:absolute;bottom:3%;left:3%;right:3%;max-width:1100px;margin:auto;height:7%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;color:#f5e1b5}
+.gift-guide>div{min-width:0;border:1px solid #b39a6055;border-radius:9px;background:#172127;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3%;padding:3px}
+.gift-guide>div>span{font-size:clamp(13px,min(3vw,2.6vh),30px)}.gift-guide strong{font-size:clamp(9px,min(2.2vw,1.8vh),24px);white-space:nowrap}.gift-guide small{font-size:clamp(6px,min(1.25vw,1.15vh),14px);white-space:nowrap;letter-spacing:.03em}
+.gift-guide>div:nth-child(3){border-color:#76edf777}.gift-guide>div:nth-child(4){border-color:#e5ba5c99;background:#2e251b}
+.machine{height:73%}#demo-button{bottom:11%}.studio .machine{height:89%}.studio .gift-guide{bottom:1%;height:8%;left:1%;right:1%;max-width:88vh}.studio #demo-button{bottom:10%}
+@media(min-aspect-ratio:1/1){.gift-guide{max-width:76vh}}@media(max-aspect-ratio:1/1){.studio .gift-guide{max-width:none}}
