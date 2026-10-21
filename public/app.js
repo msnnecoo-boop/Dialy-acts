@@ -2,7 +2,7 @@ const $ = id => document.getElementById(id);
 const paper = $('paper');
 const machine = document.querySelector('.machine');
 const grid = $('print-grid');
-const capacities = { small: 12, pair: 2, half: 2, full: 1 };
+const capacities = { small: 6, pair: 2, half: 2, full: 1 };
 const pages = [];
 let current = null;
 let startTimer;

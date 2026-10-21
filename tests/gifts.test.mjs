@@ -23,3 +23,8 @@ test('coin thresholds and repeated gift totals determine print size',()=>{
  assert.equal(normalizeGift({giftDetails:{diamondCount:10},repeatCount:2}).totalCoins,20);
  assert.equal(normalizeGift({giftName:'Unknown'}).totalCoins,null);
 });
+
+test('prefer available high resolution avatar and skip unsafe candidates',()=>{
+ assert.equal(normalizeGift({profilePictureUrl:'https://example.com/small.jpg',user:{avatarLarge:{urlList:['https://example.com/large.jpg']}}}).avatar,'https://example.com/large.jpg');
+ assert.equal(normalizeGift({user:{avatarLarge:{urlList:['javascript:bad']},avatarMedium:{url:['https://example.com/medium.jpg']}}}).avatar,'https://example.com/medium.jpg');
+});

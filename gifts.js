@@ -7,7 +7,9 @@ export function normalizeGift(evt, timestamp = Date.now()) {
   const id = String(evt.uniqueId || evt.user?.uniqueId || 'viewer').slice(0, 80);
   const nickname = String(evt.nickname || evt.user?.nickname || id).slice(0, 100);
   const giftName = String(evt.giftDetails?.giftName || evt.giftName || evt.extendedGiftInfo?.name || evt.gift?.name || 'Gift').slice(0, 100);
-  const avatar = evt.profilePictureUrl || evt.user?.profilePictureUrl || evt.user?.profilePicture?.urls?.[0] || evt.user?.avatarThumb?.urlList?.[0] || '';
+  const imageUrl = image => image?.urlList?.[0] || image?.url?.[0] || image?.urls?.[0];
+  const candidates = [imageUrl(evt.user?.avatarLarge), imageUrl(evt.avatarLarge), imageUrl(evt.user?.avatarMedium), imageUrl(evt.avatarMedium), evt.profilePictureUrl, evt.user?.profilePictureUrl, imageUrl(evt.user?.profilePicture), imageUrl(evt.user?.avatarThumb)];
+  const avatar = candidates.find(url => typeof url === 'string' && /^https:\/\//i.test(url)) || '';
   const count = Number(evt.repeatCount);
   const repeatCount = Number.isFinite(count) ? Math.max(1, Math.min(9999, Math.floor(count))) : 1;
   const rawCoins = Number(evt.giftDetails?.diamondCount ?? evt.diamondCount ?? evt.extendedGiftInfo?.diamond_count ?? evt.extendedGiftInfo?.diamondCount);
